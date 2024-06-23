@@ -1,0 +1,14 @@
+{
+  "hash": "af3df23332dab3520767f40b74921082",
+  "result": {
+    "markdown": "---\ntitle: \"Pré visualização\"\n---\n\n\nBRA <- ne_states(country = \"Brazil\", returnclass = \"sf\")\n\n# Filtrar o estado do Pará\nPA <- BRA |>\n  filter(name_en == \"Pará\")\n\n# Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)\nstar <- data.frame(\n  x = -48.5, # longitude\n  y = -1.45  # latitude\n)\n\n# Criar o mapa com a estrela azul\nggplot(BRA) +\n  geom_sf(fill = \"white\", color = \"black\", linewidth = 0.5) +\n  geom_sf(data = PA, fill = \"red\") +\n  geom_point(data = star, aes(x = x, y = y), shape = 8, color = \"blue\", size = 5) +\n  theme_void()\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n\n\nYou can add options to executable code like this\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n```\n[1] 4\n```\n:::\n:::\n\n\nThe `echo: false` option disables the printing of code (only output is displayed).\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,16 +1,26 @@
 ---
-title: "Arquivo1"
-format: html
-editor: visual
+title: "Pré visualização"
 ---
 
-## Quarto
+BRA <- ne_states(country = "Brazil", returnclass = "sf")
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+# Filtrar o estado do Pará
+PA <- BRA |>
+  filter(name_en == "Pará")
 
-## Running Code
+# Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)
+star <- data.frame(
+  x = -48.5, # longitude
+  y = -1.45  # latitude
+)
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+# Criar o mapa com a estrela azul
+ggplot(BRA) +
+  geom_sf(fill = "white", color = "black", linewidth = 0.5) +
+  geom_sf(data = PA, fill = "red") +
+  geom_point(data = star, aes(x = x, y = y), shape = 8, color = "blue", size = 5) +
+  theme_void()
+
 
 ```{r}
 1 + 1

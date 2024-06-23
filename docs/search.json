@@ -5,5 +5,12 @@
     "title": "Uso de diferentes concentrações de extrato de tiririca na germinação de jambu",
     "section": "",
     "text": "Uso de diferentes concentrações de extrato de tiririca na germinação de jambu\nEsta página foi criado com o objetivo de disponibilizar os códigos do trabalho final da disciplina Análise e Visualização de Dados em Fitopatologia (FIP606), ofertada pelo Programa de Pós-Graduação em Fitopatologia da UFV e ministrada pelo professor Emerson Del Ponte.\nNeste projeto, foi analisada a germinação de sementes de jambu (Acmella oleracea) sob a influência de diferentes concentrações do extrato aquoso de tiririca (Cyperus rotundus). Foram aplicados cinco tratamentos de germinação: controle (0%), 5%, 10%, 25% e 50%. O experimento contou com oito repetições para cada tratamento, com delineamento inteiramente casualizado."
+  },
+  {
+    "objectID": "arquivo1.html",
+    "href": "arquivo1.html",
+    "title": "Pré visualização",
+    "section": "",
+    "text": "BRA &lt;- ne_states(country = “Brazil”, returnclass = “sf”)\n\nFiltrar o estado do Pará\nPA &lt;- BRA |&gt; filter(name_en == “Pará”)\n\n\nDefinir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)\nstar &lt;- data.frame( x = -48.5, # longitude y = -1.45 # latitude )\n\n\nCriar o mapa com a estrela azul\nggplot(BRA) + geom_sf(fill = “white”, color = “black”, linewidth = 0.5) + geom_sf(data = PA, fill = “red”) + geom_point(data = star, aes(x = x, y = y), shape = 8, color = “blue”, size = 5) + theme_void()\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   }
 ]
