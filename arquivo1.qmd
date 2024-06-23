@@ -30,7 +30,7 @@ dados1 <- read_excel("Dados.xlsx", sheet = 6)
 ```
 
 ## Localização do experimento
-
+ Universidade Federal Rural da Amazônia (UFRA) - Belém/PA
 ```{r}
 
 BRA <- ne_states(country = "Brazil", returnclass = "sf")
