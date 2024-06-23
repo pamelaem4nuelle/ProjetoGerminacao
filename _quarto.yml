@@ -2,19 +2,32 @@ project:
   type: website
   output-dir: docs
   
+execute: 
+  cache: true
+  freeze: auto
+
 website:
   title: "Projeto Germinação"
+ 
   navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
-
+   pinned: true
+   left:
+   - text: Pré-visualização
+     href: arquivo1.qmd
+   - text: Análise Estatística
+     href: arquivo2.qmd
+     
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    fontsize: 1.1em
+    theme: 
+      light: sandstone
+      dark: darkly
     toc: true
+    code-copy: true
+    code-overflow: wrap
+    warning: false
+
 editor: visual
 
 

@@ -1,205 +1,350 @@
 ---
 title: "Análise Estatística"
 ---
+## Carregando os pacotes
 
-##Visualização Ngerm
+```{r}
+library(dplyr)
+library(ggplot2)
+library(rnaturalearth)
+library(remotes)
+library(rnaturalearthhires)
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+```
 
-{r} library(ggplot2)
+## Carregando os dados
 
-dados_a \<- dados \|\> mutate(trat = as.numeric(trat))
+```{r}
+library(readxl)
 
-g1 \<- dados_a \|\> ggplot(aes(trat, Ngerm)) + geom_jitter(width = 0.1, alpha = 0.2) + stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue") + scale_x_continuous(breaks = c(0, 5, 10, 25, 50)) + ylim(35, 55) + labs(x = "Concentração (%)", y = "Sementes germinadas") + theme_classic()
+dados <- read_excel("Dados.xlsx")
+```
+
+## Visualização Ngerm
+
+```{r}
+library(ggplot2)
+
+dados_a <- dados |> 
+  mutate(trat = as.numeric(trat))
+
+g1 <- dados_a |>
+  ggplot(aes(trat, Ngerm)) +
+  geom_jitter(width = 0.1, alpha = 0.2) +
+  stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue") +
+  scale_x_continuous(breaks = c(0, 5, 10, 25, 50)) +
+  ylim(35, 55) +
+  labs(x = "Concentração (%)", y = "Sementes germinadas") +
+  theme_classic()
 
 g1
 
-##ANOVA Ngerm
+```
 
-{r}
+## ANOVA Ngerm
 
-m1 \<- lm(Ngerm\~trat, data = dados) summary(m1)
+```{r}
+
+m1 <- lm(Ngerm~trat,
+         data = dados)
+summary(m1)
 
 anova(m1)
 
-m1$residuals hist(m1$residuals)
+m1$residuals
+hist(m1$residuals)
 
-library(emmeans) m1_medias \<- emmeans(m1, \~ trat) plot(m1_medias)
 
-library(multcomp) cld(m1_medias)
+library(emmeans)
+m1_medias <- emmeans(m1, ~ trat)
+plot(m1_medias)
 
-library(performance) check_normality(m1) check_heteroscedasticity(m1)
+library(multcomp)
+cld(m1_medias)
 
-library(DHARMa) plot(simulateResiduals(m1))
+library(performance)
+check_normality(m1)
+check_heteroscedasticity(m1)
 
-shapiro.test(m1\$residuals)
+library(DHARMa)
+plot(simulateResiduals(m1))
 
-bartlett.test(Ngerm\~trat, data = dados)
+shapiro.test(m1$residuals)
 
-##Regressão Ngerm
+bartlett.test(Ngerm~trat,
+         data = dados)
 
-{r}
 
-dados2 \<- dados %\>% group_by(trat) %\>% summarise(Ngerm = mean(Ngerm)/50\*100)
+```
 
-quadratico \<- lm(Ngerm \~ poly(trat,2, raw = T), data = dados2)
+## Regressão Ngerm
 
-b \<- summary(quadratico)
+```{r}
 
-R2q \<- round(b\$r.squared,2)
+dados2 <- dados %>% group_by(trat) %>% summarise(Ngerm = mean(Ngerm)/50*100)
 
-B0q \<- round(quadratico\$coefficients\[1\],4)
+quadratico <- lm(Ngerm ~ poly(trat,2, raw = T), data = dados2)
 
-B1q \<- round(quadratico\$coefficients\[2\],4)
+b <- summary(quadratico)
 
-B2q \<- round(quadratico\$coefficients\[3\],4)
+R2q <- round(b$r.squared,2)
 
-equacao2 \<- paste(B2q,"x²", "+", "(", B1q, ")","x", "+", B0q)
+B0q <- round(quadratico$coefficients[1],4)
 
-grafico2 \<- ggplot(data = dados2,aes(x = trat, y = Ngerm))+ geom_point() + geom_smooth(method = "lm", formula = y \~ poly(x,2,raw = T)) + theme_classic() + annotate(geom = "text", x = 35, y = 100, label = paste("y =", equacao2)) + annotate(geom = "text", x = 25.5, y = 98, label = paste("R² =", R2q)) + scale_x_continuous(breaks = seq(0,50,5))+ labs(x = "Concentração (%)", y = "Taxa de Germinação (%)")
+B1q <- round(quadratico$coefficients[2],4)
 
+B2q <- round(quadratico$coefficients[3],4)
+
+equacao2 <- paste(B2q,"x²", "+", "(", B1q, ")","x", "+", B0q)
+
+grafico2 <- ggplot(data = dados2,aes(x = trat, y = Ngerm))+
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ poly(x,2,raw = T)) +
+  theme_classic() + 
+  annotate(geom = "text", x = 35, y = 100, label = paste("y =", equacao2)) + 
+  annotate(geom = "text", x = 25.5, y = 98, label = paste("R² =", R2q)) +
+  scale_x_continuous(breaks = seq(0,50,5))+
+  labs(x = "Concentração (%)", y = "Taxa de Germinação (%)")
+  
 grafico2
 
-r \<- sqrt(R2q)
+r <- sqrt(R2q)
 
-##Visualização Nmort
+```
 
-{r} library(ggplot2)
+## Visualização Nmort
 
-dados_b \<- dados \|\> mutate(trat = as.numeric(trat))
+```{r}
+library(ggplot2)
 
-g2 \<- dados_b \|\> ggplot(aes(trat, Nmort)) + geom_jitter(width = 0.1, alpha = 0.2)+ stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue") + scale_x_continuous(breaks = c(0, 5, 10, 25, 50))+ ylim(0,15) + labs(x = "Concentração", y = "Sementes mortas")+ theme_classic() g2
+dados_b <- dados |> 
+  mutate(trat = as.numeric(trat))
 
-#ANOVA Nmort
+g2 <- dados_b |>
+  ggplot(aes(trat, Nmort)) +
+  geom_jitter(width = 0.1, alpha = 0.2)+
+       stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue") +
+  scale_x_continuous(breaks = c(0, 5, 10, 25, 50))+
+  ylim(0,15) +
+  labs(x = "Concentração", y = "Sementes mortas")+
+  theme_classic()
+g2
 
-{r} m2 \<- lm(Nmort\~trat, data = dados) summary(m2)
+```
+
+## ANOVA Nmort
+
+```{r}
+m2 <- lm(Nmort~trat,
+         data = dados)
+summary(m2)
 
 anova(m2)
 
-m2$residuals hist(m2$residuals)
+m2$residuals
+hist(m2$residuals)
 
-library(performance) check_normality(m2) check_heteroscedasticity(m2)
+library(performance)
+check_normality(m2)
+check_heteroscedasticity(m2)
 
-library(DHARMa) plot(simulateResiduals(m2))
+library(DHARMa)
+plot(simulateResiduals(m2))
 
-shapiro.test(m2\$residuals)
+shapiro.test(m2$residuals)
 
-bartlett.test(Nmort\~trat, data = dados)
+bartlett.test(Nmort~trat,
+         data = dados)
+```
 
-##Regressão Nmort
+## Regressão Nmort
 
-{r} dados3 \<- dados %\>% group_by(trat) %\>% summarise(Nmort = mean(Nmort)/50\*100)
+```{r}
+dados3 <- dados %>% group_by(trat) %>% summarise(Nmort = mean(Nmort)/50*100)
 
-quadratico3 \<- lm(Nmort \~ poly(trat,2, raw = T), data = dados3)
+quadratico3 <- lm(Nmort ~ poly(trat,2, raw = T), data = dados3)
 
-b \<- summary(quadratico3)
+b <- summary(quadratico3)
 
-R2q \<- round(b\$r.squared,2)
+R2q <- round(b$r.squared,2)
 
-B0q \<- round(quadratico3\$coefficients\[1\],2)
+B0q <- round(quadratico3$coefficients[1],2)
 
-B1q \<- round(quadratico3\$coefficients\[2\],2)
+B1q <- round(quadratico3$coefficients[2],2)
 
-B2q \<- round(quadratico3\$coefficients\[3\],4)
+B2q <- round(quadratico3$coefficients[3],4)
 
-equacao3 \<- paste("(", B2q, ")", "x²", "+", B1q,"x", "+", B0q)
+equacao3 <- paste("(", B2q, ")", "x²", "+", B1q,"x", "+", B0q)
 
-grafico3 \<- ggplot(data = dados3,aes(x = trat, y = Nmort))+ geom_point() + geom_smooth(method = "lm", formula = y \~ poly(x,2,raw = T)) + theme_classic() + annotate(geom = "text", x = 10, y = 25, label = paste("y =", equacao3)) + annotate(geom = "text", x = 10, y = 23, label = paste("R² =", R2q))+ scale_x_continuous(breaks = seq(0,50,5))+ labs(x = "Concentração (%)", y = "Taxa de Mortalidade (%)")
-
+grafico3 <- ggplot(data = dados3,aes(x = trat, y = Nmort))+
+  geom_point() + 
+  geom_smooth(method = "lm", formula = y ~ poly(x,2,raw = T)) +
+  theme_classic() + 
+  annotate(geom = "text", x = 10, y = 25, label = paste("y =", equacao3)) + 
+  annotate(geom = "text", x = 10, y = 23, label = paste("R² =", R2q))+
+  scale_x_continuous(breaks = seq(0,50,5))+
+  labs(x = "Concentração (%)", y = "Taxa de Mortalidade (%)")
+  
 grafico3
 
-r \<- sqrt(R2q)
+r <- sqrt(R2q)
+```
 
-##Visualização IVG
+## Visualização IVG
 
-{r} library(ggplot2)
+```{r}
+library(ggplot2)
 
-dados_c \<- dados \|\> mutate(trat = as.numeric(trat))
+dados_c <- dados |> 
+  mutate(trat = as.numeric(trat))
 
-g3 \<- dados_c \|\> ggplot(aes(trat, IVG)) + geom_jitter(width = 0.1, alpha = 0.2)+ stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue") + scale_x_continuous(breaks = c(0, 5, 10, 25, 50))+ ylim(10,18) +\
-labs(x = "Concentração (%)", y = "IVG (%)")+ theme_classic() g3
+g3 <- dados_c |>
+  ggplot(aes(trat, IVG)) +
+  geom_jitter(width = 0.1, alpha = 0.2)+
+        stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue") +
+  scale_x_continuous(breaks = c(0, 5, 10, 25, 50))+
+  ylim(10,18) +  
+ labs(x = "Concentração (%)", y = "IVG (%)")+
+  theme_classic()
+g3
 
-##ANOVA IVG
+```
 
-{r} m3 \<- lm(IVG\~trat, data = dados) summary(m3)
+## ANOVA IVG
+
+```{r}
+m3 <- lm(IVG~trat,
+         data = dados)
+summary(m3)
 
 anova(m3)
 
-m3$residuals hist(m3$residuals)
+m3$residuals
+hist(m3$residuals)
 
-library(performance) check_normality(m3) check_heteroscedasticity(m3)
+library(performance)
+check_normality(m3)
+check_heteroscedasticity(m3)
 
-library(DHARMa) plot(simulateResiduals(m3))
+library(DHARMa)
+plot(simulateResiduals(m3))
 
-shapiro.test(m3\$residuals)
+shapiro.test(m3$residuals)
 
-bartlett.test(IVG\~trat, data = dados)
+bartlett.test(IVG~trat,
+         data = dados)
+```
 
-##Regressão IVG
+## Regressão IVG
 
-{r} dados4 \<- dados %\>% group_by(trat) %\>% summarise(IVG = mean(IVG)) quadratico4 \<- lm(IVG \~ poly(trat,2, raw = T), data = dados4)
+```{r}
+dados4 <- dados %>% group_by(trat) %>% summarise(IVG = mean(IVG))
+quadratico4 <- lm(IVG ~ poly(trat,2, raw = T), data = dados4)
 
-b \<- summary(quadratico4)
+b <- summary(quadratico4)
 
-R2q \<- round(b\$r.squared,2)
+R2q <- round(b$r.squared,2)
 
-B0q \<- round(quadratico4\$coefficients\[1\],2)
+B0q <- round(quadratico4$coefficients[1],2)
 
-B1q \<- round(quadratico4\$coefficients\[2\],2)
+B1q <- round(quadratico4$coefficients[2],2)
 
-B2q \<- round(quadratico4\$coefficients\[3\],4)
+B2q <- round(quadratico4$coefficients[3],4)
 
-equacao4 \<- paste(B2q,"x²", "+", "(", B1q, ")","x", "+", B0q)
+equacao4 <- paste(B2q,"x²", "+", "(", B1q, ")","x", "+", B0q)
 
-grafico4 \<- ggplot(data = dados4,aes(x = trat, y = IVG))+ geom_point()+ geom_smooth(method = "lm", formula = y \~ poly(x,2,raw = T)) + theme_classic() + annotate(geom = "text", x = 35, y = 19, label = paste("y =", equacao4)) + annotate(geom = "text", x = 35, y = 18, label = paste("R² =", R2q))+ scale_x_continuous(breaks = seq(0,50,5))+ labs(x = "Concentração (%)", y = "IVG (%)")
-
+grafico4 <- ggplot(data = dados4,aes(x = trat, y = IVG))+
+  geom_point()+ 
+  geom_smooth(method = "lm", formula = y ~ poly(x,2,raw = T)) +
+  theme_classic() + 
+  annotate(geom = "text", x = 35, y = 19, label = paste("y =", equacao4)) + 
+  annotate(geom = "text", x = 35, y = 18, label = paste("R² =", R2q))+
+  scale_x_continuous(breaks = seq(0,50,5))+
+  labs(x = "Concentração (%)", y = "IVG (%)")
+  
+  
 grafico4
 
-r \<- sqrt(R2q)
+r <- sqrt(R2q)
+```
 
-##Visualização MS
+## Visualização MS
 
-{r} library(ggplot2)
+```{r}
+library(ggplot2)
 
-dados_d \<- dados \|\> mutate(trat = as.numeric(trat))
+dados_d <- dados |> 
+  mutate(trat = as.numeric(trat))
 
-g4 \<- dados_d \|\> ggplot(aes(trat,MS )) + geom_jitter(width = 0.1, alpha = 0.2)+ stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue")+ scale_x_continuous(breaks = c(0, 5, 10, 25, 50))+ ylim(0,0.015) +\
-labs(x = "Concentração (%)", y = "Massa Seca")+ theme_classic() g4
+# Criar o gráfico
+g4 <- dados_d |>
+  ggplot(aes(trat,MS )) +
+  geom_jitter(width = 0.1, alpha = 0.2)+
+         stat_summary(fun.data = "mean_cl_boot", size = 0.5, color = "blue")+
+  scale_x_continuous(breaks = c(0, 5, 10, 25, 50))+
+  ylim(0,0.015) +  
+  labs(x = "Concentração (%)", y = "Massa Seca")+
+  theme_classic()
+g4
 
-##ANOVA MS
+```
 
-{r} m4 \<- lm(MS\~trat, data = dados) summary(m4)
+## ANOVA MS
+
+```{r}
+m4 <- lm(MS~trat,
+         data = dados)
+summary(m4)
 
 anova(m4)
 
-m4$residuals hist(m4$residuals)
+m4$residuals
+hist(m4$residuals)
 
-library(performance) check_normality(m4) check_heteroscedasticity(m4)
+library(performance)
+check_normality(m4)
+check_heteroscedasticity(m4)
 
-library(DHARMa) plot(simulateResiduals(m4))
+library(DHARMa)
+plot(simulateResiduals(m4))
 
-shapiro.test(m4\$residuals)
+shapiro.test(m4$residuals)
 
-bartlett.test(MS\~trat, data = dados)
+bartlett.test(MS~trat,
+         data = dados)
+```
 
-##Regressão MS
+## Regressão MS
 
-{r}
+```{r}
 
-dados5 \<- dados %\>% group_by(trat) %\>% summarise(MS = mean(MS)) quadratico5 \<- lm(MS \~ poly(trat,2, raw = T), data = dados5)
+dados5 <- dados %>% group_by(trat) %>% summarise(MS = mean(MS))
+quadratico5 <- lm(MS ~ poly(trat,2, raw = T), data = dados5)
 
-b \<- summary(quadratico5)
+b <- summary(quadratico5)
 
-R2q \<- round(b\$r.squared,2)
+R2q <- round(b$r.squared,2)
 
-B0q \<- round(quadratico5\$coefficients\[1\],4)
+B0q <- round(quadratico5$coefficients[1],4)
 
-B1q \<- round(quadratico5\$coefficients\[2\],4)
+B1q <- round(quadratico5$coefficients[2],4)
 
-B2q \<- round(quadratico5\$coefficients\[3\],6)
+B2q <- round(quadratico5$coefficients[3],6)
 
-equacao5 \<- paste("(", B2q, ")", "x²", "+", B1q,"x", "+", B0q)
+equacao5 <- paste("(", B2q, ")", "x²", "+", B1q,"x", "+", B0q)
 
-grafico5 \<- ggplot(data = dados5,aes(x = trat, y = MS))+ geom_point()+ geom_smooth(method = "lm", formula = y \~ poly(x,2,raw = T)) + theme_classic() + annotate(geom = "text", x = 35, y = 0.01, label = paste("y =", equacao5)) + annotate(geom = "text", x = 35, y = 0.0095, label = paste("R² =", R2q))+ scale_x_continuous(breaks = seq(0,50,5))+ labs(x = "Concentração (%)", y = "Massa Seca (g)")
-
+grafico5 <- ggplot(data = dados5,aes(x = trat, y = MS))+
+  geom_point()+ 
+  geom_smooth(method = "lm", formula = y ~ poly(x,2,raw = T)) +
+  theme_classic() + 
+  annotate(geom = "text", x = 35, y = 0.01, label = paste("y =", equacao5)) + 
+  annotate(geom = "text", x = 35, y = 0.0095, label = paste("R² =", R2q))+
+  scale_x_continuous(breaks = seq(0,50,5))+
+  labs(x = "Concentração (%)", y = "Massa Seca (g)")
+  
 grafico5
 
-r \<- sqrt(R2q)
+r <- sqrt(R2q)
+```
