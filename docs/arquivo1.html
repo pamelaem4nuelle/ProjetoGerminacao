@@ -93,9 +93,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -141,9 +147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#filtrar-o-estado-do-pará" id="toc-filtrar-o-estado-do-pará" class="nav-link active" data-scroll-target="#filtrar-o-estado-do-pará">Filtrar o estado do Pará</a></li>
-  <li><a href="#definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" id="toc-definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" class="nav-link" data-scroll-target="#definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará">Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)</a></li>
-  <li><a href="#criar-o-mapa-com-a-estrela-azul" id="toc-criar-o-mapa-com-a-estrela-azul" class="nav-link" data-scroll-target="#criar-o-mapa-com-a-estrela-azul">Criar o mapa com a estrela azul</a></li>
+  <li><a href="#carregando-os-pacotes" id="toc-carregando-os-pacotes" class="nav-link active" data-scroll-target="#carregando-os-pacotes">Carregando os pacotes</a></li>
+  <li><a href="#carregando-os-dados" id="toc-carregando-os-dados" class="nav-link" data-scroll-target="#carregando-os-dados">Carregando os dados</a></li>
+  <li><a href="#localização-do-experimento" id="toc-localização-do-experimento" class="nav-link" data-scroll-target="#localização-do-experimento">Localização do experimento</a></li>
+  <li><a href="#visualização-da-germinação-ao-longo-dos-dias-após-a-montagem-do-ensaio" id="toc-visualização-da-germinação-ao-longo-dos-dias-após-a-montagem-do-ensaio" class="nav-link" data-scroll-target="#visualização-da-germinação-ao-longo-dos-dias-após-a-montagem-do-ensaio">Visualização da germinação ao longo dos dias após a montagem do ensaio</a></li>
+  <li><a href="#gráfico-3d" id="toc-gráfico-3d" class="nav-link" data-scroll-target="#gráfico-3d">Gráfico 3D</a></li>
   </ul>
 </nav>
     </div>
@@ -167,45 +175,191 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Carregando os pacotes</p>
-<p>{r} library(dplyr) library(ggplot2) library(rnaturalearth) library(remotes) library(rnaturalearthhires) library(tidyverse) library(ggplot2) library(ggthemes)</p>
-<p>Carregando os dados</p>
-<p>{r} library(readxl)</p>
-<p>dados &lt;- read_excel(“Dados.xlsx”)</p>
-<p>{r} library(readxl)</p>
-<p>dados1 &lt;- read_excel(“Dados.xlsx”, sheet = 6)</p>
-<p>Localização do experimento</p>
-<p>{r}</p>
-<p>BRA &lt;- ne_states(country = “Brazil”, returnclass = “sf”)</p>
-<section id="filtrar-o-estado-do-pará" class="level1">
-<h1>Filtrar o estado do Pará</h1>
-<p>PA &lt;- BRA |&gt; filter(name_en == “Pará”)</p>
-</section>
-<section id="definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" class="level1">
-<h1>Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)</h1>
-<p>star &lt;- data.frame( x = -48.5, # longitude y = -1.45 # latitude )</p>
-</section>
-<section id="criar-o-mapa-com-a-estrela-azul" class="level1">
-<h1>Criar o mapa com a estrela azul</h1>
-<p>ggplot(BRA) + geom_sf(fill = “white”, color = “black”, linewidth = 0.5) + geom_sf(data = PA, fill = “red”) + geom_point(data = star, aes(x = x, y = y), shape = 8, color = “blue”, size = 5) + theme_void()</p>
-<p>Visualização da germinação ao longo dos dias após a montagem do ensaio</p>
-<p>{r} media &lt;- dados1 |&gt; group_by(Tratamento) |&gt; summarise(Dia2=mean(Dia2), Dia3=mean(Dia3), Dia4=mean(Dia4), Dia5=mean(Dia5), Dia6=mean(Dia6), Dia7=mean(Dia7), Dia8=mean(Dia8), Dia9=mean(Dia9)) media2 &lt;- data.frame(Tratamento = rep(media$Tratamento, each = 8), Dia = rep(2:9,5), Variavel = rbind(t(media[1,2:9]),t(media[2,2:9]), t(media[3,2:9]),t(media[4,2:9]),t(media[5,2:9])))</p>
-<p>media2<span class="math inline">\(Tratamento &lt;- as.character(media2\)</span>Tratamento)</p>
-<p>{r} ggplot(data = media2, aes(x=Dia, y=Variavel)) + geom_line(aes(group = Tratamento, color = Tratamento), size = 0.5) + geom_point(aes(fill = Tratamento), shape = 21, alpha = 0.5, size = 3) + scale_y_continuous(breaks = seq(10,100,10), limits = c(0,100)) + scale_x_continuous(breaks = seq(2,9,1)) + labs(x = “Dias”, y = “% Germinação”, title = “Taxa de sementes germinadas ao longo dos dias”, color = “Concentração”, fill = “Concentração”) + scale_color_discrete(limits = as.character(c(0, 5, 10, 25, 50))) + scale_fill_discrete(limits = as.character(c(0, 5, 10, 25, 50))) + theme_classic()</p>
-<p>Gráfico 3D</p>
+<section id="carregando-os-pacotes" class="level2">
+<h2 class="anchored" data-anchor-id="carregando-os-pacotes">Carregando os pacotes</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
 </div>
-<p>You can add options to executable code like this</p>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remotes)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearthhires)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ lubridate 1.9.3     ✔ tibble    3.2.1
+✔ purrr     1.0.2     ✔ tidyr     1.3.1
+✔ readr     2.1.5     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="carregando-os-dados" class="level2">
+<h2 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"Dados.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>dados1 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"Dados.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="localização-do-experimento" class="level2">
+<h2 class="anchored" data-anchor-id="localização-do-experimento">Localização do experimento</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>BRA <span class="ot">&lt;-</span> <span class="fu">ne_states</span>(<span class="at">country =</span> <span class="st">"Brazil"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>PA <span class="ot">&lt;-</span> BRA <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name_en <span class="sc">==</span> <span class="st">"Pará"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>star <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="sc">-</span><span class="fl">48.5</span>, </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="sc">-</span><span class="fl">1.45</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(BRA) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> PA, <span class="at">fill =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> star, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">shape =</span> <span class="dv">8</span>, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="arquivo1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
+</section>
+<section id="visualização-da-germinação-ao-longo-dos-dias-após-a-montagem-do-ensaio" class="level2">
+<h2 class="anchored" data-anchor-id="visualização-da-germinação-ao-longo-dos-dias-após-a-montagem-do-ensaio">Visualização da germinação ao longo dos dias após a montagem do ensaio</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>media <span class="ot">&lt;-</span> dados1 <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Tratamento) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Dia2=</span><span class="fu">mean</span>(Dia2), </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia3=</span><span class="fu">mean</span>(Dia3),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia4=</span><span class="fu">mean</span>(Dia4),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia5=</span><span class="fu">mean</span>(Dia5),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia6=</span><span class="fu">mean</span>(Dia6),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia7=</span><span class="fu">mean</span>(Dia7),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia8=</span><span class="fu">mean</span>(Dia8),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">Dia9=</span><span class="fu">mean</span>(Dia9))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>media2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Tratamento =</span> <span class="fu">rep</span>(media<span class="sc">$</span>Tratamento, <span class="at">each =</span> <span class="dv">8</span>),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Dia =</span> <span class="fu">rep</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>,<span class="dv">5</span>),</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Variavel =</span> <span class="fu">rbind</span>(<span class="fu">t</span>(media[<span class="dv">1</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]),<span class="fu">t</span>(media[<span class="dv">2</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]),                                  <span class="fu">t</span>(media[<span class="dv">3</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]),<span class="fu">t</span>(media[<span class="dv">4</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]),<span class="fu">t</span>(media[<span class="dv">5</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>])))</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>media2<span class="sc">$</span>Tratamento <span class="ot">&lt;-</span> <span class="fu">as.character</span>(media2<span class="sc">$</span>Tratamento)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> media2, <span class="fu">aes</span>(<span class="at">x=</span>Dia, <span class="at">y=</span>Variavel)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> Tratamento, <span class="at">color =</span> Tratamento), <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Tratamento), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">10</span>,<span class="dv">100</span>,<span class="dv">10</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>)) <span class="sc">+</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">9</span>,<span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Dias"</span>, <span class="at">y =</span> <span class="st">"% Germinação"</span>, <span class="at">title =</span> <span class="st">"Taxa de sementes germinadas ao longo dos dias"</span>, <span class="at">color =</span> <span class="st">"Concentração"</span>, <span class="at">fill =</span> <span class="st">"Concentração"</span>) <span class="sc">+</span> </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">limits =</span> <span class="fu">as.character</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>))) <span class="sc">+</span> </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">limits =</span> <span class="fu">as.character</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>))) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="arquivo1_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="gráfico-3d" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-3d">Gráfico 3D</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'plotly'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    last_plot</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:graphics':
+
+    layout</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>media2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Tratamento =</span> <span class="fu">rep</span>(dados1<span class="sc">$</span>Tratamento, <span class="at">each =</span> <span class="dv">8</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dia =</span> <span class="fu">rep</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">5</span>),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variavel =</span> <span class="fu">rbind</span>(<span class="fu">t</span>(media[<span class="dv">1</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]), <span class="fu">t</span>(media[<span class="dv">2</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]), <span class="fu">t</span>(media[<span class="dv">3</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]), <span class="fu">t</span>(media[<span class="dv">4</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]), <span class="fu">t</span>(media[<span class="dv">5</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in data.frame(Tratamento = rep(dados1$Tratamento, each = 8), Dia =
+rep(2:9, : nomes de linhas foram encontrados em uma variável curta e foram
+descartados</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>media2<span class="sc">$</span>Tratamento <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(media2<span class="sc">$</span>Tratamento)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>media2 <span class="ot">&lt;-</span> media2 <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Tratamento, Dia) <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Variavel =</span> <span class="fu">mean</span>(Variavel))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Tratamento'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> media2[media2<span class="sc">$</span>Tratamento <span class="sc">==</span> <span class="dv">0</span>, ], <span class="at">x =</span> <span class="sc">~</span>Tratamento, <span class="at">y =</span> <span class="sc">~</span>Dia, <span class="at">z =</span> <span class="sc">~</span>Variavel,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"scatter3d"</span>, <span class="at">mode =</span> <span class="st">"lines+markers"</span>, <span class="at">color =</span> <span class="fu">I</span>(<span class="st">"#1f77b4"</span>), </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">legendgroup =</span> <span class="st">"Tratamento 1"</span>, <span class="at">name =</span> <span class="st">"Concentração 0%"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> media2[media2<span class="sc">$</span>Tratamento <span class="sc">==</span> <span class="dv">5</span>, ], <span class="at">x =</span> <span class="sc">~</span>Tratamento, <span class="at">y =</span> <span class="sc">~</span>Dia, <span class="at">z =</span> <span class="sc">~</span>Variavel,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"scatter3d"</span>, <span class="at">mode =</span> <span class="st">"lines+markers"</span>, <span class="at">color =</span> <span class="fu">I</span>(<span class="st">"#d62728"</span>), </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">legendgroup =</span> <span class="st">"Tratamento 2"</span>, <span class="at">name =</span> <span class="st">"Concentração 5%"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> media2[media2<span class="sc">$</span>Tratamento <span class="sc">==</span> <span class="dv">10</span>, ], <span class="at">x =</span> <span class="sc">~</span>Tratamento, <span class="at">y =</span> <span class="sc">~</span>Dia, <span class="at">z =</span> <span class="sc">~</span>Variavel,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"scatter3d"</span>, <span class="at">mode =</span> <span class="st">"lines+markers"</span>, <span class="at">color =</span> <span class="fu">I</span>(<span class="st">"#2ca02c"</span>), </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">legendgroup =</span> <span class="st">"Tratamento 3"</span>, <span class="at">name =</span> <span class="st">"Concentração 10%"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> media2[media2<span class="sc">$</span>Tratamento <span class="sc">==</span> <span class="dv">25</span>, ], <span class="at">x =</span> <span class="sc">~</span>Tratamento, <span class="at">y =</span> <span class="sc">~</span>Dia, <span class="at">z =</span> <span class="sc">~</span>Variavel,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"scatter3d"</span>, <span class="at">mode =</span> <span class="st">"lines+markers"</span>, <span class="at">color =</span> <span class="fu">I</span>(<span class="st">"purple"</span>), </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">legendgroup =</span> <span class="st">"Tratamento 4"</span>, <span class="at">name =</span> <span class="st">"Concentração 25%"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> media2[media2<span class="sc">$</span>Tratamento <span class="sc">==</span> <span class="dv">50</span>, ], <span class="at">x =</span> <span class="sc">~</span>Tratamento, <span class="at">y =</span> <span class="sc">~</span>Dia, <span class="at">z =</span> <span class="sc">~</span>Variavel,</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="st">"scatter3d"</span>, <span class="at">mode =</span> <span class="st">"lines+markers"</span>, <span class="at">color =</span> <span class="fu">I</span>(<span class="st">"orange"</span>), </span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">legendgroup =</span> <span class="st">"Tratamento 5"</span>, <span class="at">name =</span> <span class="st">"Concentração 50%"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">scene =</span> <span class="fu">list</span>(</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Concentração"</span>),</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Dias"</span>),</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">zaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"%Germinação"</span>)</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Número de sementes germinadas ao longo dos dias"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-6362cb36b421dbae3794" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-6362cb36b421dbae3794">{"x":{"visdat":{"37b438836b4d":["function () ","plotlyVisDat"],"37b46e7b3d00":["function () ","data"],"37b49327d86":["function () ","data"],"37b4553e31aa":["function () ","data"],"37b42ca01a3e":["function () ","data"],"37b4484f620e":["function () ","data"]},"cur_data":"37b4484f620e","attrs":{"37b46e7b3d00":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"type":"scatter3d","mode":"lines+markers","color":["#1f77b4"],"legendgroup":"Tratamento 1","name":"Concentração 0%","inherit":true},"37b49327d86":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"type":"scatter3d","mode":"lines+markers","color":["#d62728"],"legendgroup":"Tratamento 2","name":"Concentração 5%","inherit":true},"37b4553e31aa":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"type":"scatter3d","mode":"lines+markers","color":["#2ca02c"],"legendgroup":"Tratamento 3","name":"Concentração 10%","inherit":true},"37b42ca01a3e":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"type":"scatter3d","mode":"lines+markers","color":["purple"],"legendgroup":"Tratamento 4","name":"Concentração 25%","inherit":true},"37b4484f620e":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"type":"scatter3d","mode":"lines+markers","color":["orange"],"legendgroup":"Tratamento 5","name":"Concentração 50%","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Concentração"},"yaxis":{"title":"Dias"},"zaxis":{"title":"%Germinação"}},"title":"Número de sementes germinadas ao longo dos dias","hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0,0,0,0,0,0,0],"y":[2,3,4,5,6,7,8,9],"z":[15.53125,64.9375,78.0625,81.03125,82.3125,82.875,83.34375,83.75],"type":"scatter3d","mode":"lines+markers","legendgroup":"Tratamento 1","name":"Concentração 0%","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"textfont":{"color":"rgba(31,119,180,1)"},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[5,5,5,5,5,5,5,5],"y":[2,3,4,5,6,7,8,9],"z":[14.625,62.71875,76.34375,79.21875,80.46875,81,81.5,81.875],"type":"scatter3d","mode":"lines+markers","legendgroup":"Tratamento 2","name":"Concentração 5%","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"textfont":{"color":"rgba(214,39,40,1)"},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"frame":null},{"x":[10,10,10,10,10,10,10,10],"y":[2,3,4,5,6,7,8,9],"z":[14.625,63.5625,77.65625,80.5625,81.65625,82.25,82.6875,83],"type":"scatter3d","mode":"lines+markers","legendgroup":"Tratamento 3","name":"Concentração 10%","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"textfont":{"color":"rgba(44,160,44,1)"},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"x":[25,25,25,25,25,25,25,25],"y":[2,3,4,5,6,7,8,9],"z":[15.40625,64.28125,77.03125,80,81.3125,81.8125,82.25,82.65625],"type":"scatter3d","mode":"lines+markers","legendgroup":"Tratamento 4","name":"Concentração 25%","marker":{"color":"rgba(160,32,240,1)","line":{"color":"rgba(160,32,240,1)"}},"textfont":{"color":"rgba(160,32,240,1)"},"error_y":{"color":"rgba(160,32,240,1)"},"error_x":{"color":"rgba(160,32,240,1)"},"line":{"color":"rgba(160,32,240,1)"},"frame":null},{"x":[50,50,50,50,50,50,50,50],"y":[2,3,4,5,6,7,8,9],"z":[14.5625,63.25,76.90625,79.6875,80.75,81.3125,81.71875,81.96875],"type":"scatter3d","mode":"lines+markers","legendgroup":"Tratamento 5","name":"Concentração 50%","marker":{"color":"rgba(255,165,0,1)","line":{"color":"rgba(255,165,0,1)"}},"textfont":{"color":"rgba(255,165,0,1)"},"error_y":{"color":"rgba(255,165,0,1)"},"error_x":{"color":"rgba(255,165,0,1)"},"line":{"color":"rgba(255,165,0,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
 
 
 </section>
