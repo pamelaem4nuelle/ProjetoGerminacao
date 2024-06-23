@@ -17,6 +17,7 @@ website:
    - text: Análise Estatística
      href: arquivo2.qmd
      
+
 format:
   html:
     fontsize: 1.1em
@@ -29,6 +30,5 @@ format:
     warning: false
 
 editor: visual
-
 
 

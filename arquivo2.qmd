@@ -56,14 +56,6 @@ anova(m1)
 m1$residuals
 hist(m1$residuals)
 
-
-library(emmeans)
-m1_medias <- emmeans(m1, ~ trat)
-plot(m1_medias)
-
-library(multcomp)
-cld(m1_medias)
-
 library(performance)
 check_normality(m1)
 check_heteroscedasticity(m1)
