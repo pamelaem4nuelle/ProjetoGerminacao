@@ -94,6 +94,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -135,7 +137,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#filtrar-o-estado-do-pará" id="toc-filtrar-o-estado-do-pará" class="nav-link active" data-scroll-target="#filtrar-o-estado-do-pará">Filtrar o estado do Pará</a></li>
+  <li><a href="#definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" id="toc-definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" class="nav-link" data-scroll-target="#definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará">Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)</a></li>
+  <li><a href="#criar-o-mapa-com-a-estrela-azul" id="toc-criar-o-mapa-com-a-estrela-azul" class="nav-link" data-scroll-target="#criar-o-mapa-com-a-estrela-azul">Criar o mapa com a estrela azul</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -157,10 +167,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>Carregando os pacotes</p>
+<p>{r} library(dplyr) library(ggplot2) library(rnaturalearth) library(remotes) library(rnaturalearthhires) library(tidyverse) library(ggplot2) library(ggthemes)</p>
+<p>Carregando os dados</p>
+<p>{r} library(readxl)</p>
+<p>dados &lt;- read_excel(“Dados.xlsx”)</p>
+<p>{r} library(readxl)</p>
+<p>dados1 &lt;- read_excel(“Dados.xlsx”, sheet = 6)</p>
+<p>Localização do experimento</p>
+<p>{r}</p>
 <p>BRA &lt;- ne_states(country = “Brazil”, returnclass = “sf”)</p>
+<section id="filtrar-o-estado-do-pará" class="level1">
+<h1>Filtrar o estado do Pará</h1>
 <p>PA &lt;- BRA |&gt; filter(name_en == “Pará”)</p>
+</section>
+<section id="definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" class="level1">
+<h1>Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)</h1>
 <p>star &lt;- data.frame( x = -48.5, # longitude y = -1.45 # latitude )</p>
+</section>
+<section id="criar-o-mapa-com-a-estrela-azul" class="level1">
+<h1>Criar o mapa com a estrela azul</h1>
 <p>ggplot(BRA) + geom_sf(fill = “white”, color = “black”, linewidth = 0.5) + geom_sf(data = PA, fill = “red”) + geom_point(data = star, aes(x = x, y = y), shape = 8, color = “blue”, size = 5) + theme_void()</p>
+<p>Visualização da germinação ao longo dos dias após a montagem do ensaio</p>
+<p>{r} media &lt;- dados1 |&gt; group_by(Tratamento) |&gt; summarise(Dia2=mean(Dia2), Dia3=mean(Dia3), Dia4=mean(Dia4), Dia5=mean(Dia5), Dia6=mean(Dia6), Dia7=mean(Dia7), Dia8=mean(Dia8), Dia9=mean(Dia9)) media2 &lt;- data.frame(Tratamento = rep(media$Tratamento, each = 8), Dia = rep(2:9,5), Variavel = rbind(t(media[1,2:9]),t(media[2,2:9]), t(media[3,2:9]),t(media[4,2:9]),t(media[5,2:9])))</p>
+<p>media2<span class="math inline">\(Tratamento &lt;- as.character(media2\)</span>Tratamento)</p>
+<p>{r} ggplot(data = media2, aes(x=Dia, y=Variavel)) + geom_line(aes(group = Tratamento, color = Tratamento), size = 0.5) + geom_point(aes(fill = Tratamento), shape = 21, alpha = 0.5, size = 3) + scale_y_continuous(breaks = seq(10,100,10), limits = c(0,100)) + scale_x_continuous(breaks = seq(2,9,1)) + labs(x = “Dias”, y = “% Germinação”, title = “Taxa de sementes germinadas ao longo dos dias”, color = “Concentração”, fill = “Concentração”) + scale_color_discrete(limits = as.character(c(0, 5, 10, 25, 50))) + scale_fill_discrete(limits = as.character(c(0, 5, 10, 25, 50))) + theme_classic()</p>
+<p>Gráfico 3D</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -176,6 +208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

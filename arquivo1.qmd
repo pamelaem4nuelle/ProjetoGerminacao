@@ -2,21 +2,86 @@
 title: "Pré visualização"
 ---
 
+Carregando os pacotes
+
+{r}
+library(dplyr)
+library(ggplot2)
+library(rnaturalearth)
+library(remotes)
+library(rnaturalearthhires)
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+
+Carregando os dados
+
+{r}
+library(readxl)
+
+dados <- read_excel("Dados.xlsx")
+
+{r}
+library(readxl)
+
+dados1 <- read_excel("Dados.xlsx", sheet = 6)
+
+Localização do experimento
+
+{r}
+
 BRA <- ne_states(country = "Brazil", returnclass = "sf")
 
+# Filtrar o estado do Pará
 PA <- BRA |>
   filter(name_en == "Pará")
 
+# Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)
 star <- data.frame(
   x = -48.5, # longitude
   y = -1.45  # latitude
 )
 
+# Criar o mapa com a estrela azul
 ggplot(BRA) +
   geom_sf(fill = "white", color = "black", linewidth = 0.5) +
   geom_sf(data = PA, fill = "red") +
   geom_point(data = star, aes(x = x, y = y), shape = 8, color = "blue", size = 5) +
   theme_void()
+
+Visualização da germinação ao longo dos dias após a montagem do ensaio
+
+{r}
+media <- dados1 |>
+  group_by(Tratamento) |>
+  summarise(Dia2=mean(Dia2), 
+            Dia3=mean(Dia3),
+            Dia4=mean(Dia4),
+            Dia5=mean(Dia5),
+            Dia6=mean(Dia6),
+            Dia7=mean(Dia7),
+            Dia8=mean(Dia8),
+            Dia9=mean(Dia9))
+media2 <- data.frame(Tratamento = rep(media$Tratamento, each = 8),
+                     Dia = rep(2:9,5),
+                     Variavel = rbind(t(media[1,2:9]),t(media[2,2:9]),                                  t(media[3,2:9]),t(media[4,2:9]),t(media[5,2:9])))
+
+media2$Tratamento <- as.character(media2$Tratamento)
+
+
+{r}
+ggplot(data = media2, aes(x=Dia, y=Variavel)) +
+  geom_line(aes(group = Tratamento, color = Tratamento), size = 0.5) + 
+  geom_point(aes(fill = Tratamento), shape = 21, alpha = 0.5, size = 3) + 
+  scale_y_continuous(breaks = seq(10,100,10), limits = c(0,100)) + 
+  scale_x_continuous(breaks = seq(2,9,1)) + 
+  labs(x = "Dias", y = "% Germinação", title = "Taxa de sementes germinadas ao longo dos dias", color = "Concentração", fill = "Concentração") + 
+  scale_color_discrete(limits = as.character(c(0, 5, 10, 25, 50))) + 
+  scale_fill_discrete(limits = as.character(c(0, 5, 10, 25, 50))) +
+  theme_classic()
+
+Gráfico 3D
+
 
 
 ```{r}
