@@ -135,15 +135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#filtrar-o-estado-do-pará" id="toc-filtrar-o-estado-do-pará" class="nav-link active" data-scroll-target="#filtrar-o-estado-do-pará">Filtrar o estado do Pará</a></li>
-  <li><a href="#definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" id="toc-definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" class="nav-link" data-scroll-target="#definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará">Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)</a></li>
-  <li><a href="#criar-o-mapa-com-a-estrela-azul" id="toc-criar-o-mapa-com-a-estrela-azul" class="nav-link" data-scroll-target="#criar-o-mapa-com-a-estrela-azul">Criar o mapa com a estrela azul</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -166,16 +158,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>BRA &lt;- ne_states(country = “Brazil”, returnclass = “sf”)</p>
-<section id="filtrar-o-estado-do-pará" class="level1">
-<h1>Filtrar o estado do Pará</h1>
 <p>PA &lt;- BRA |&gt; filter(name_en == “Pará”)</p>
-</section>
-<section id="definir-as-coordenadas-para-a-estrela-azul-exemplo-perto-de-belém-pará" class="level1">
-<h1>Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)</h1>
 <p>star &lt;- data.frame( x = -48.5, # longitude y = -1.45 # latitude )</p>
-</section>
-<section id="criar-o-mapa-com-a-estrela-azul" class="level1">
-<h1>Criar o mapa com a estrela azul</h1>
 <p>ggplot(BRA) + geom_sf(fill = “white”, color = “black”, linewidth = 0.5) + geom_sf(data = PA, fill = “red”) + geom_point(data = star, aes(x = x, y = y), shape = 8, color = “blue”, size = 5) + theme_void()</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -192,7 +176,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>echo: false</code> option disables the printing of code (only output is displayed).</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

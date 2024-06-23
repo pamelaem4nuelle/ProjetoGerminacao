@@ -4,17 +4,14 @@ title: "Pré visualização"
 
 BRA <- ne_states(country = "Brazil", returnclass = "sf")
 
-# Filtrar o estado do Pará
 PA <- BRA |>
   filter(name_en == "Pará")
 
-# Definir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)
 star <- data.frame(
   x = -48.5, # longitude
   y = -1.45  # latitude
 )
 
-# Criar o mapa com a estrela azul
 ggplot(BRA) +
   geom_sf(fill = "white", color = "black", linewidth = 0.5) +
   geom_sf(data = PA, fill = "red") +

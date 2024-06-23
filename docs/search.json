@@ -11,6 +11,6 @@
     "href": "arquivo1.html",
     "title": "Pré visualização",
     "section": "",
-    "text": "BRA &lt;- ne_states(country = “Brazil”, returnclass = “sf”)\n\nFiltrar o estado do Pará\nPA &lt;- BRA |&gt; filter(name_en == “Pará”)\n\n\nDefinir as coordenadas para a estrela azul (exemplo: perto de Belém, Pará)\nstar &lt;- data.frame( x = -48.5, # longitude y = -1.45 # latitude )\n\n\nCriar o mapa com a estrela azul\nggplot(BRA) + geom_sf(fill = “white”, color = “black”, linewidth = 0.5) + geom_sf(data = PA, fill = “red”) + geom_point(data = star, aes(x = x, y = y), shape = 8, color = “blue”, size = 5) + theme_void()\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "text": "BRA &lt;- ne_states(country = “Brazil”, returnclass = “sf”)\nPA &lt;- BRA |&gt; filter(name_en == “Pará”)\nstar &lt;- data.frame( x = -48.5, # longitude y = -1.45 # latitude )\nggplot(BRA) + geom_sf(fill = “white”, color = “black”, linewidth = 0.5) + geom_sf(data = PA, fill = “red”) + geom_point(data = star, aes(x = x, y = y), shape = 8, color = “blue”, size = 5) + theme_void()\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
   }
 ]
