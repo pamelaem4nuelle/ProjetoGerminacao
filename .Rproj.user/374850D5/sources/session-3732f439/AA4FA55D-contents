@@ -1,0 +1,155 @@
+---
+title: "Estatística inferencial não paramétrica"
+format: html
+editor: visual
+---
+
+## Transformação, Não-paramétrico, ANOVA fatorial
+
+# Demonstração de dados que não atenderam as premissas de normalidade e homogeneidade.
+
+```{r}
+inseticida <- InsectSprays
+library(tidyverse)
+inseticida %>% 
+  count(spray)
+inseticida %>% 
+  ggplot(aes(spray,count))+
+  geom_boxplot()
+
+m1<- lm(count~spray, 
+        data = inseticida)
+summary(m1)
+anova(m1)
+library(emmeans)
+m1_medias <- emmeans(m1,~spray)
+plot(m1_medias)
+library(multcomp)
+cld(m1_medias)
+
+m1$residuals
+hist(m1$residuals)
+
+qqnorm(m1$residuals)
+
+shapiro.test(m1$residuals)
+bartlett.test(count~spray,
+              data=inseticida)
+
+library(performance)
+check_normality(m1)
+check_heteroscedasticity(m1)
+
+library(DHARMa)
+plot(simulateResiduals(m1))
+
+```
+
+# Alternativa 1 - Transformação por raiz quadrada
+
+```{r}
+inseticida <- inseticida %>% 
+  mutate(count2 = sqrt(count))
+
+inseticida %>% 
+  ggplot(aes(spray,count2))+
+  geom_boxplot()
+
+m2 <- lm(count2 ~spray,
+         data = inseticida)
+summary(m2)
+anova(m2)
+
+library(emmeans)
+m2_medias <- emmeans(m2, ~spray)
+plot(m2_medias)
+library(multcomp)
+cld(m2_medias)
+pwpm(m2_medias)
+pwpp(m2_medias)
+pairs(m2_medias)
+
+m2$residuals
+hist(m2$residuals)
+
+qqnorm(m2$residuals)
+
+shapiro.test(m2$residuals)
+
+bartlett.test(count ~spray,
+              data = inseticida)
+
+library(performance)
+check_normality(m2)
+check_heteroscedasticity(m2)
+
+library(DHARMa)
+plot(simulateResiduals(m2))
+```
+
+# Alternativa 2 - Transformação *Box-Cox*
+
+A transformação de Box-Cox é uma técnica de transformação de dados utilizada para estabilizar a variância e tornar os dados mais próximos de uma distribuição normal. Esta técnica é especialmente útil em análises de regressão e outras análises estatísticas onde a normalidade dos resíduos e a homogeneidade das variâncias são pressupostos importantes.
+
+```{r}
+library(MASS)
+b<- boxcox(lm(inseticida$count+0.1~1))
+lambda<-b$x[which.max(b$y)]
+lambda
+
+inseticida$count3 <- (inseticida$count ^lambda - 1)/lambda
+lambda
+inseticida$count3
+```
+
+# Alternativa 3 - Teste de Kruskal-Wallis
+
+```{r}
+library(agricolae)
+kruskal.test(count~spray,
+             data=inseticida)
+m3<- kruskal(inseticida$count,
+             inseticida$spray,
+             group=TRUE)
+m3
+```
+
+# Alternativa 4 - GLMs (Modelo de Regressão Linear Generalizada )
+
+```{r}
+m4<- glm(count~spray,
+         family=poisson,
+         data=inseticida)
+m4
+
+summary(m4)
+anova(m4)
+
+library(car)
+Anova(m4)
+plot(simulateResiduals(m4))
+m4_medias<- emmeans(m4, ~spray,
+                    type="response")
+m4_medias
+cld(m4_medias)
+```
+
+# Anova Fatorial
+
+A Análise de Variância Fatorial (ANOVA fatorial) é uma extensão da ANOVA simples que permite examinar o efeito de dois ou mais fatores (variáveis independentes) e suas interações sobre uma variável dependente. É uma técnica estatística amplamente usada para entender se há diferenças significativas entre as médias de diferentes grupos e como diferentes fatores podem influenciar a variável de interesse, tanto individualmente quanto em combinação.
+
+```{r}
+library(gsheet)
+li <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=2023059672#gid=2023059672")
+ li %>%  
+   ggplot(aes(factor(dose),severity,color=factor(dose)))+
+   geom_jitter(width = 0.1)+
+   facet_wrap(~treat)
+
+mf <- lm(severity ~treat *factor(dose), data=li)
+mf 
+anova(mf)
+plot(simulateResiduals(mf)) 
+mf_medias <- emmeans(mf,~dose|treat)
+cld(mf_medias)
+```

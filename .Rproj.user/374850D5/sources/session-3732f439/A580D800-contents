@@ -25,13 +25,24 @@ website:
      -  text: Estatística inferencial
         menu:
           - href: aula6.qmd
-            text: ANOVA
+            text: ANOVA- parte 1
+          - href: Aula8.qmd
+            text: ANOVA- parte 2
+          - href: aula7.qmd
+            text: Estatística não-parametrica
+          - href: Aula9.qmd
+            text: Análise de Regressão
+          - href: Aula10.qmd
+            text: Análise de Correlação
+     - text: Mapas 
+       href: aula11.qmd
      -  text: Projeto Germinação
         menu:
           - href: arquivo1.qmd
             text: Pré-visualização
           - href: arquivo2.qmd
             text: Análise Estatística
+
 
   
   

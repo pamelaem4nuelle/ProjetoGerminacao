@@ -1,0 +1,4 @@
+"0","imgs2<- imgss %>% "
+"0","  select_at(3:5)"
+"0","library(AgroR)"
+"0","corgraph(imgs2)"

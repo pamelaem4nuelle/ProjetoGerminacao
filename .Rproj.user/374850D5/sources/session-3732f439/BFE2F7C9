@@ -1,0 +1,31 @@
+{
+    "id": "BFE2F7C9",
+    "path": "~/GitHub/ProjetoGerminacao/index.qmd",
+    "project_path": "index.qmd",
+    "type": "quarto_markdown",
+    "hash": "354161031",
+    "contents": "",
+    "dirty": false,
+    "created": 1720046971596.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "cursorPosition": "1,0",
+        "scrollLine": "0",
+        "rmdVisualModeLocation": "8:331.3333435058594"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1720047580,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1720047580957,
+    "read_only": false,
+    "read_only_alternatives": []
+}
