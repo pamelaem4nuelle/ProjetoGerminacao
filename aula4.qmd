@@ -1,0 +1,184 @@
+---
+title: "Outros gráficos"
+format: html
+editor: visual
+---
+
+## Carregando dados do datapasta e de outros sites
+
+```{r}
+comp <- c(9,
+  12.5,
+  10,
+  8,
+  13.2,
+  11,
+  10.8,
+  9.5,
+  10.8,
+  10.4,
+  13.72,
+  15.91,
+  15.7,
+  14.2,
+  15.9,
+  16.54,
+  18,
+  14.4,
+  16.41,
+  16)
+data.table::data.table(
+              trat = c("Mg2","Mg2","Mg2","Mg2",                     "Mg2","Mg2","Mg2","Mg2","Mg2","Mg2","control",                     "control","control","control","control","control","control",
+                       "control","control","control"),
+               rep = c(1L,2L,3L,4L,5L,6L,7L,8L,
+                       9L,10L,1L,2L,3L,4L,5L,6L,7L,8L,9L,10L),
+              comp = c(9,12.5,10,8,13.2,11,10.8,
+                       9.5,10.8,10.4,13.72,15.91,15.7,14.2,15.9,16.54,
+                       18,14.4,16.41,16)
+)
+ 
+
+tibble::tribble(
+           ~Paises, ~Visitas,
+          "Brazil",     4303,
+      "Mozambique",       43,
+        "Portugal",       33,
+   "United States",       23,
+          "Angola",       19,
+           "Spain",       16,
+       "(not set)",       12,
+        "Colombia",        8,
+         "Germany",        5,
+         "Hungary",        5,
+  "United Kingdom",        5,
+     "Netherlands",        4,
+         "Ecuador",        3,
+          "France",        3,
+           "Chile",        2,
+        "Paraguay",        2,
+            "Peru",        2,
+       "Argentina",        1,
+         "Austria",        1,
+         "Bolivia",        1,
+      "Cape Verde",        1,
+           "China",        1,
+           "Egypt",        1,
+         "Finland",        1,
+           "India",        1,
+           "Italy",        1,
+        "Malaysia",        1,
+        "Pakistan",        1,
+          "Poland",        1,
+       "Singapore",        1,
+     "Timor-Leste",        1,
+         "Uruguay",        1
+  )
+```
+
+# Carregando os dados usando o **tribble**
+
+```{r}
+library(tidyverse)
+pepper <- 
+  tribble(
+   ~t,  ~`1`,  ~`2`,  ~`3`,
+   0,  0.08, 0.001, 0.001,
+   7,  0.13,  0.01, 0.001,
+  14,  0.78,  0.09,  0.01,
+  21,  0.92,  0.25,  0.05,
+  28,  0.99,   0.8,  0.18,
+  35, 0.995,  0.98,  0.34,
+  42, 0.999,  0.99,  0.48,
+  49, 0.999, 0.999,  0.74
+  )
+```
+
+## Variação da Incidência de Epidemias ao Longo do Tempo
+
+O gráfico permite visualizar como as diferentes epidemias variam ao longo do tempo. As linhas conectam os pontos de incidência, revelando se há tendências crescentes, decrescentes ou estáveis ao longo dos períodos observados. As cores distintas permitem comparar facilmente as diferentes epidemias ou condições.
+
+```{r}
+pepper %>% 
+  pivot_longer(2:4,
+               names_to= "epidemic",
+               values_to="inc") %>% 
+  ggplot(aes(t,inc, color= epidemic))+
+  geom_point()+
+  geom_line()+
+  annotate(geom="text",
+           x=10,
+           y=0.75,
+           label="1")+
+  annotate(geom="text",
+           x=25,
+           y=0.75,
+           label="2")+
+  annotate(geom="text",
+           x=47,
+           y=0.75,
+           label="3")+
+  theme(legend.position = "none")
+```
+
+## Tabela de contigência
+
+Quando há duas variáveis cruzando, pode ser utilizado um pacote chamado **janitor**, com a função **tabyl**, que cruza os dados e é contado as combinações presentes no conjunto de dados.
+
+```{r}
+cr <- read_csv("https://raw.githubusercontent.com/emdelponte/paper-coffee-rust-Ethiopia/master/data/survey_clean.csv")
+cr %>% 
+  count(farm_management, cultivar) %>% 
+   ggplot(aes(cultivar, n, fill=farm_management))+
+  geom_col(position = "dodge")
+
+library(janitor)
+cr %>% 
+  tabyl(cultivar, farm_management)
+ 
+
+```
+
+## Distribuição de Práticas de Gestão Agrícola por Tipo de Cultivar de Café
+
+Comparação da distribuição de práticas de gestão agrícola entre diferentes tipos de cultivares de café, destacando variações e padrões nas preferências de gestão em diferentes contextos de cultivo.
+
+```{r}
+library(ggthemes)
+cr %>% 
+  count(farm_management, cultivar) %>% 
+   ggplot(aes(cultivar, n, fill=farm_management,
+              label=n))+
+  geom_col(position = "dodge2")+
+    scale_fill_colorblind()+
+  theme_bw()+
+  theme(strip.text.x= element_blank(),
+        legend.position = "top")+
+  geom_text(position = position_dodge(width = 0.8))+facet_wrap(~cultivar,scales= "free_x")
+```
+
+## Gráfico de média e distribuição
+
+```{r}
+ 
+library(gsheet)
+mg <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=983033137")
+mg %>% 
+  group_by(trat) %>% 
+  summarise(mean_comp=mean(comp),
+            sd_comp=sd(comp)) %>% 
+  ggplot(aes(trat,mean_comp))+
+  geom_col(fill= "steelblue" , width= 0.5)+
+  geom_point(size=3)+
+  ylim(0, 20)+
+  geom_errorbar(aes(ymin=mean_comp - sd_comp,
+                    ymax=mean_comp +sd_comp),
+                width=0.02)+
+  annotate(geom="text",
+           x=1, y= 17.5,
+           label= "*")
+
+mg %>% 
+  ggplot(aes(trat, comp))+
+  geom_jitter(width=0.1)
+mg
+```

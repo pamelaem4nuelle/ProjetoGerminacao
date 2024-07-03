@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>FIP606 - Estatística descritiva</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">FIP606</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./aula2.html"> 
+<span class="menu-text">Importação de dados</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-estatística-descritiva" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Estatística descritiva</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-estatística-descritiva">    
+        <li>
+    <a class="dropdown-item" href="./aula3.html">
+ <span class="dropdown-text">Estatística descritiva- parte 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./aula4.html">
+ <span class="dropdown-text">Estatistica Descritiva- parte 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Exercicio.html">
+ <span class="dropdown-text">Estatistica Descritiva- parte 3</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-estatística-inferencial" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Estatística inferencial</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-estatística-inferencial">    
+        <li>
+    <a class="dropdown-item" href="./aula6.html">
+ <span class="dropdown-text">ANOVA</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projeto-germinação" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projeto Germinação</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projeto-germinação">    
+        <li>
+    <a class="dropdown-item" href="./arquivo1.html">
+ <span class="dropdown-text">Pré-visualização</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./arquivo2.html">
+ <span class="dropdown-text">Análise Estatística</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#importação-dos-dados" id="toc-importação-dos-dados" class="nav-link active" data-scroll-target="#importação-dos-dados">Importação dos dados</a></li>
+  <li><a href="#gráfico-de-histograma-facetado" id="toc-gráfico-de-histograma-facetado" class="nav-link" data-scroll-target="#gráfico-de-histograma-facetado">Gráfico de histograma facetado</a></li>
+  <li><a href="#sumário-estatístico" id="toc-sumário-estatístico" class="nav-link" data-scroll-target="#sumário-estatístico">Sumário estatístico</a></li>
+  <li><a href="#gráfico-de-dispersão" id="toc-gráfico-de-dispersão" class="nav-link" data-scroll-target="#gráfico-de-dispersão">Gráfico de dispersão</a></li>
+  <li><a href="#criação-de-subconjuntos" id="toc-criação-de-subconjuntos" class="nav-link" data-scroll-target="#criação-de-subconjuntos">Criação de subconjuntos</a>
+  <ul class="collapse">
+  <li><a href="#visualização-dos-subconjuntos" id="toc-visualização-dos-subconjuntos" class="nav-link" data-scroll-target="#visualização-dos-subconjuntos">Visualização dos subconjuntos</a></li>
+  </ul></li>
+  <li><a href="#boxplot-de-severidade-por-cultivar-em-cr_oromia" id="toc-boxplot-de-severidade-por-cultivar-em-cr_oromia" class="nav-link" data-scroll-target="#boxplot-de-severidade-por-cultivar-em-cr_oromia">Boxplot de Severidade por Cultivar em <strong>cr_oromia</strong></a></li>
+  <li><a href="#boxplot-de-severidade-por-cultivar-em-cr_pr" id="toc-boxplot-de-severidade-por-cultivar-em-cr_pr" class="nav-link" data-scroll-target="#boxplot-de-severidade-por-cultivar-em-cr_pr">Boxplot de Severidade por Cultivar em <strong>cr_pr</strong></a></li>
+  <li><a href="#gráfico-combinado-p1-p2" id="toc-gráfico-combinado-p1-p2" class="nav-link" data-scroll-target="#gráfico-combinado-p1-p2">Gráfico Combinado <strong>(p1 / p2)</strong></a></li>
+  <li><a href="#gráfico-box-plot-com-inserção-do-histograma" id="toc-gráfico-box-plot-com-inserção-do-histograma" class="nav-link" data-scroll-target="#gráfico-box-plot-com-inserção-do-histograma">Gráfico Box plot com Inserção do Histograma</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Estatística descritiva</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="importação-dos-dados" class="level2">
+<h2 class="anchored" data-anchor-id="importação-dos-dados">Importação dos dados</h2>
+<p>Foi utilizado uma função dentro do pacote <strong>tidyverse</strong>, que permite ver as primeiras linhas e as colunas do conjunto de dados, bem como o tipo de dados de cada coluna.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cr <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://raw.githubusercontent.com/emdelponte/paper-coffee-rust-Ethiopia/master/data/survey_clean.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span> (cr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 405
+Columns: 13
+$ farm            &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,…
+$ region          &lt;chr&gt; "SNNPR", "SNNPR", "SNNPR", "SNNPR", "SNNPR", "SNNPR", …
+$ zone            &lt;chr&gt; "Bench Maji", "Bench Maji", "Bench Maji", "Bench Maji"…
+$ district        &lt;chr&gt; "Debub Bench", "Debub Bench", "Debub Bench", "Debub Be…
+$ lon             &lt;dbl&gt; 35.44250, 35.44250, 35.42861, 35.42861, 35.42861, 35.3…
+$ lat             &lt;dbl&gt; 6.904722, 6.904722, 6.904444, 6.904444, 6.904444, 6.90…
+$ altitude        &lt;int&gt; 1100, 1342, 1434, 1100, 1400, 1342, 1432, 1100, 1400, …
+$ cultivar        &lt;chr&gt; "Local", "Mixture", "Mixture", "Local", "Local", "Mixt…
+$ shade           &lt;chr&gt; "Sun", "Mid shade", "Mid shade", "Sun", "Sun", "Mid sh…
+$ cropping_system &lt;chr&gt; "Plantation", "Plantation", "Plantation", "Plantation"…
+$ farm_management &lt;chr&gt; "Unmanaged", "Minimal", "Minimal", "Unmanaged", "Unman…
+$ inc             &lt;dbl&gt; 86.70805, 51.34354, 43.20000, 76.70805, 47.15808, 51.3…
+$ sev2            &lt;dbl&gt; 55.57986, 17.90349, 8.25120, 46.10154, 12.25167, 19.91…</code></pre>
+</div>
+</div>
+</section>
+<section id="gráfico-de-histograma-facetado" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-de-histograma-facetado">Gráfico de histograma facetado</h2>
+<p>Este gráfico permite comparar a distribuição da severidade (sev2) em diferentes regiões e cultivares. Cada subplot mostra a distribuição da severidade para uma combinação específica de região e cultivar, e as cores indicam a região, ajudando a visualizar diferenças regionais dentro de cada cultivar.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sev2,<span class="at">fill=</span>region))<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()<span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(region <span class="sc">~</span> cultivar, <span class="at">ncol =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>))<span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)<span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)<span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Frequency"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Severity(%)"</span>, <span class="at">fill=</span> <span class="st">"Region"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"crl.png"</span>,<span class="at">bg=</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sumário-estatístico" class="level2">
+<h2 class="anchored" data-anchor-id="sumário-estatístico">Sumário estatístico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cr<span class="sc">$</span>inc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   9.50   19.43   32.50   34.89   48.20   86.71 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cultivar) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">sev_med=</span><span class="fu">median</span>(sev2),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sev_mean=</span><span class="fu">mean</span>(sev2),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sev_sd=</span><span class="fu">sd</span>(sev2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  cultivar sev_med sev_mean sev_sd
+  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+1 Improved    1.64     2.16   1.82
+2 Local      17.2     18.7   11.1 
+3 Mixture     5.43     6.47   4.35</code></pre>
+</div>
+</div>
+</section>
+<section id="gráfico-de-dispersão" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-de-dispersão">Gráfico de dispersão</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cr <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(inc, sev2))<span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="criação-de-subconjuntos" class="level1">
+<h1>Criação de subconjuntos</h1>
+<p>Utilizando as funções <strong>select</strong> e <strong>filter</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filtra Oromia</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cr_oromia <span class="ot">&lt;-</span>cr <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(farm,region,cultivar,sev2) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region<span class="sc">==</span><span class="st">"Oromia"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>cr_oromia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    farm region cultivar       sev2
+1    286 Oromia  Mixture  7.6274450
+2    287 Oromia  Mixture  9.3879410
+3    288 Oromia  Mixture  1.3030200
+4    289 Oromia  Mixture  9.7891413
+5    290 Oromia    Local 18.4690000
+6    291 Oromia  Mixture 13.1865577
+7    292 Oromia  Mixture  5.6004004
+8    293 Oromia  Mixture  1.0600000
+9    294 Oromia    Local 17.6088000
+10   295 Oromia  Mixture 15.4358022
+11   296 Oromia  Mixture  5.8400978
+12   297 Oromia  Mixture 10.2601837
+13   298 Oromia    Local 11.4707600
+14   299 Oromia  Mixture 13.2734384
+15   300 Oromia  Mixture  7.7134539
+16   301 Oromia  Mixture  3.6383511
+17   302 Oromia  Mixture  4.6690000
+18   303 Oromia Improved  1.7366100
+19   304 Oromia  Mixture  2.8937300
+20   305 Oromia Improved  2.1282300
+21   306 Oromia  Mixture  2.0048430
+22   307 Oromia Improved  1.6296100
+23   308 Oromia  Mixture  1.6118874
+24   309 Oromia Improved  0.4465000
+25   310 Oromia  Mixture  0.7438860
+26   311 Oromia  Mixture  0.3735200
+27   312 Oromia  Mixture  0.7527600
+28   313 Oromia  Mixture  1.0028000
+29   314 Oromia  Mixture  1.0181400
+30   315 Oromia  Mixture  1.1375040
+31   316 Oromia  Mixture  3.5267820
+32   317 Oromia  Mixture  9.3135960
+33   318 Oromia  Mixture  6.1525200
+34   319 Oromia  Mixture  3.7184000
+35   320 Oromia    Local 10.7188200
+36   321 Oromia  Mixture 10.5820180
+37   322 Oromia  Mixture  8.0887678
+38   323 Oromia  Mixture  5.6028276
+39   324 Oromia    Local  3.5987140
+40   325 Oromia  Mixture 10.8131456
+41   326 Oromia  Mixture  6.7706640
+42   327 Oromia  Mixture  2.3161600
+43   328 Oromia    Local 13.3365000
+44   329 Oromia  Mixture 10.3508904
+45   330 Oromia  Mixture 11.0999900
+46   331 Oromia  Mixture  7.3409240
+47   332 Oromia    Local 16.8740000
+48   333 Oromia  Mixture 14.5304483
+49   334 Oromia  Mixture  5.3738280
+50   335 Oromia    Local 12.8632540
+51   336 Oromia  Mixture 11.7615680
+52   337 Oromia  Mixture  2.8427170
+53   338 Oromia    Local 11.4109257
+54   339 Oromia  Mixture 13.3321720
+55   340 Oromia  Mixture  1.5465200
+56   341 Oromia    Local 15.1980400
+57   342 Oromia  Mixture  9.5260000
+58   343 Oromia  Mixture  2.6913670
+59   344 Oromia  Mixture  2.8851200
+60   345 Oromia  Mixture  0.7933800
+61   346 Oromia  Mixture  2.5758070
+62   347 Oromia Improved  1.5202250
+63   348 Oromia Improved  1.9673645
+64   349 Oromia Improved  2.1362400
+65   350 Oromia Improved  1.6877600
+66   351 Oromia Improved  1.6812500
+67   352 Oromia Improved  1.1504500
+68   353 Oromia Improved  1.6381200
+69   354 Oromia Improved  1.9673645
+70   355 Oromia Improved  0.9522000
+71   356 Oromia Improved  0.3616000
+72   357 Oromia Improved  0.3125000
+73   358 Oromia Improved  0.7082512
+74   359 Oromia Improved  0.6328000
+75   360 Oromia Improved  1.1804187
+76   361 Oromia    Local 17.9724600
+77   362 Oromia  Mixture  5.0853913
+78   363 Oromia  Mixture  5.2119875
+79   364 Oromia    Local 14.3391600
+80   365 Oromia    Local  8.2189800
+81   366 Oromia  Mixture 10.9431975
+82   367 Oromia  Mixture  8.0301000
+83   368 Oromia    Local  6.8944350
+84   369 Oromia    Local  9.1120000
+85   370 Oromia  Mixture 12.5025802
+86   371 Oromia  Mixture 10.2341160
+87   372 Oromia    Local 30.7564000
+88   373 Oromia    Local 31.8648000
+89   374 Oromia  Mixture  5.3871304
+90   375 Oromia  Mixture  4.7923478
+91   376 Oromia  Mixture  5.0516000
+92   377 Oromia  Mixture  8.5065260
+93   378 Oromia  Mixture  5.6585640
+94   379 Oromia    Local 12.6247000
+95   380 Oromia  Mixture  6.3578157
+96   381 Oromia  Mixture  4.8735057
+97   382 Oromia  Mixture  5.2403200
+98   383 Oromia    Local 12.2460800
+99   384 Oromia  Mixture 10.2103113
+100  385 Oromia  Mixture  6.0064500
+101  386 Oromia    Local 10.3790000
+102  387 Oromia    Local 10.9736000
+103  388 Oromia    Local 10.1653760
+104  389 Oromia    Local 10.0213100
+105  390 Oromia    Local 10.2413520
+106  391 Oromia  Mixture  6.0860800
+107  392 Oromia  Mixture  7.0766400
+108  393 Oromia  Mixture  0.7560000
+109  394 Oromia    Local  7.7048400
+110  395 Oromia  Mixture  3.8988161
+111  396 Oromia  Mixture  7.0411370
+112  397 Oromia  Mixture  6.2214117
+113  398 Oromia    Local  3.8433200
+114  399 Oromia  Mixture 10.2524939
+115  400 Oromia  Mixture  7.0411370
+116  401 Oromia    Local  6.2327300
+117  402 Oromia    Local  6.1598880
+118  403 Oromia    Local  5.5450820
+119  404 Oromia    Local  4.8970320
+120  405 Oromia    Local  5.6356780
+121  241 Oromia    Local 12.0276000
+122  242 Oromia  Mixture  1.8291900
+123  243 Oromia    Local 12.3468800
+124  244 Oromia  Mixture  1.9228000
+125  245 Oromia    Local 12.4028200
+126  246 Oromia  Mixture  1.8944000
+127  247 Oromia    Local 14.1271650
+128  248 Oromia  Mixture  1.8469000
+129  249 Oromia    Local 28.0655840
+130  250 Oromia    Local 19.9798120
+131  251 Oromia    Local 32.7383840
+132  252 Oromia    Local 21.2542200
+133  253 Oromia    Local 27.0339000
+134  254 Oromia    Local 27.7637500
+135  255 Oromia    Local 29.5293000
+136  256 Oromia    Local 20.3205000
+137  257 Oromia  Mixture  7.4784310
+138  258 Oromia  Mixture  2.4319360
+139  259 Oromia    Local 10.7534200
+140  260 Oromia  Mixture  6.9260502
+141  261 Oromia  Mixture  4.2436160
+142  262 Oromia    Local 10.4428520
+143  263 Oromia  Mixture  7.4784310
+144  264 Oromia  Mixture  5.7728736
+145  265 Oromia    Local  8.3931481
+146  266 Oromia  Mixture  7.2288057
+147  267 Oromia  Mixture  5.4209655
+148  268 Oromia  Mixture  5.8796322
+149  269 Oromia  Mixture  1.1508966
+150  270 Oromia  Mixture  4.7922759
+151  271 Oromia Improved  1.4311080
+152  272 Oromia    Local 20.8580100
+153  273 Oromia Improved  5.3253000
+154  274 Oromia  Mixture  4.8204000
+155  275 Oromia Improved  6.1752232
+156  276 Oromia    Local 23.7727280
+157  277 Oromia Improved  7.7569138
+158  278 Oromia  Mixture  2.2570800
+159  279 Oromia Improved  8.7062350
+160  280 Oromia  Mixture  6.1494480
+161  281 Oromia    Local 16.1113800
+162  282 Oromia  Mixture  6.7171220
+163  283 Oromia  Mixture  4.8621080
+164  284 Oromia    Local 17.5346500
+165  285 Oromia  Mixture  6.4617480</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filtra SNNPR</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>cr_pr <span class="ot">&lt;-</span> cr <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(farm,region,cultivar,sev2) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span><span class="st">"SNNPR"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>cr_pr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    farm region cultivar      sev2
+1      1  SNNPR    Local 55.579862
+2      2  SNNPR  Mixture 17.903491
+3      3  SNNPR  Mixture  8.251200
+4      4  SNNPR    Local 46.101540
+5      5  SNNPR    Local 12.251670
+6      6  SNNPR  Mixture 19.911024
+7      7  SNNPR  Mixture 11.907481
+8      8  SNNPR    Local 55.579862
+9      9  SNNPR    Local 11.553730
+10    10  SNNPR  Mixture 11.370868
+11    11  SNNPR  Mixture 16.579731
+12    12  SNNPR    Local 45.712728
+13    13  SNNPR    Local 11.648462
+14    14  SNNPR  Mixture 22.067452
+15    15  SNNPR  Mixture 10.129165
+16    16  SNNPR    Local 26.159640
+17    17  SNNPR  Mixture  6.805820
+18    18  SNNPR    Local 15.752200
+19    19  SNNPR  Mixture  6.487000
+20    20  SNNPR    Local 24.778866
+21    21  SNNPR  Mixture 12.159252
+22    22  SNNPR    Local 12.782880
+23    23  SNNPR  Mixture  2.307500
+24    24  SNNPR    Local 19.220115
+25    25  SNNPR    Local 11.571300
+26    26  SNNPR    Local 19.821396
+27    27  SNNPR    Local 22.515520
+28    28  SNNPR    Local 35.528640
+29    29  SNNPR    Local 15.783520
+30    30  SNNPR    Local 16.815360
+31    31  SNNPR    Local 26.714000
+32    32  SNNPR  Mixture  4.019220
+33    33  SNNPR    Local 26.677000
+34    34  SNNPR  Mixture  8.054320
+35    35  SNNPR    Local 23.899106
+36    36  SNNPR  Mixture  4.365270
+37    37  SNNPR    Local 19.470719
+38    38  SNNPR  Mixture  3.596400
+39    39  SNNPR    Local 25.318400
+40    40  SNNPR    Local 19.447979
+41    41  SNNPR  Mixture  6.214600
+42    42  SNNPR    Local 19.447979
+43    43  SNNPR  Mixture  3.143520
+44    44  SNNPR    Local 23.395983
+45    45  SNNPR  Mixture  2.908200
+46    46  SNNPR    Local 47.035000
+47    47  SNNPR  Mixture  8.064420
+48    48  SNNPR  Mixture  8.951680
+49    49  SNNPR    Local 19.236258
+50    50  SNNPR    Local 34.604279
+51    51  SNNPR  Mixture  8.938020
+52    52  SNNPR  Mixture 14.655322
+53    53  SNNPR    Local 31.829824
+54    54  SNNPR    Local 29.410425
+55    55  SNNPR Improved  6.075600
+56    56  SNNPR Improved  3.103100
+57    57  SNNPR    Local 26.682180
+58    58  SNNPR    Local 39.546549
+59    59  SNNPR  Mixture  9.494940
+60    60  SNNPR  Mixture 13.882464
+61    61  SNNPR  Mixture 16.211795
+62    62  SNNPR  Mixture 10.238778
+63    63  SNNPR  Mixture 10.721400
+64    64  SNNPR    Local 25.866090
+65    65  SNNPR  Mixture 11.181888
+66    66  SNNPR  Mixture  5.758245
+67    67  SNNPR  Mixture  7.667520
+68    68  SNNPR    Local 24.706440
+69    69  SNNPR  Mixture 11.908149
+70    70  SNNPR  Mixture  7.756320
+71    71  SNNPR  Mixture  9.462000
+72    72  SNNPR    Local 30.213300
+73    73  SNNPR  Mixture  9.777217
+74    74  SNNPR  Mixture  1.310400
+75    75  SNNPR  Mixture  8.551710
+76    76  SNNPR  Mixture 10.149500
+77    77  SNNPR Improved  1.996480
+78    78  SNNPR  Mixture  5.431416
+79    79  SNNPR Improved  2.040820
+80    80  SNNPR  Mixture  5.569608
+81    81  SNNPR Improved  0.455300
+82    82  SNNPR  Mixture  7.533616
+83    83  SNNPR Improved  3.712280
+84    84  SNNPR  Mixture  4.763850
+85    85  SNNPR  Mixture  3.624720
+86    86  SNNPR  Mixture  4.787920
+87    87  SNNPR  Mixture  2.894096
+88    88  SNNPR  Mixture  2.815266
+89    89  SNNPR  Mixture  3.694535
+90    90  SNNPR  Mixture  3.162816
+91    91  SNNPR  Mixture  2.588542
+92    92  SNNPR Improved  2.551942
+93    93  SNNPR  Mixture  3.836476
+94    94  SNNPR Improved  3.335706
+95    95  SNNPR  Mixture  3.652389
+96    96  SNNPR Improved  0.518700
+97    97  SNNPR  Mixture  2.246273
+98    98  SNNPR Improved  2.822054
+99    99  SNNPR  Mixture  2.094120
+100  100  SNNPR  Mixture  1.932840
+101  101  SNNPR  Mixture  3.137651
+102  102  SNNPR  Mixture  2.325684
+103  103  SNNPR  Mixture  2.106880
+104  104  SNNPR  Mixture  2.842560
+105  105  SNNPR  Mixture 17.407500
+106  106  SNNPR  Mixture  8.346800
+107  107  SNNPR Improved  1.622130
+108  108  SNNPR  Mixture  4.819027
+109  109  SNNPR Improved  1.554410
+110  110  SNNPR  Mixture  4.126551
+111  111  SNNPR Improved  0.524800
+112  112  SNNPR  Mixture  2.999880
+113  113  SNNPR Improved  1.415322
+114  114  SNNPR  Mixture  4.235430
+115  115  SNNPR  Mixture  4.440492
+116  116  SNNPR  Mixture  4.465396
+117  117  SNNPR  Mixture  3.413250
+118  118  SNNPR  Mixture  5.126069
+119  119  SNNPR  Mixture  3.808860
+120  120  SNNPR  Mixture  8.166150
+121  121  SNNPR  Mixture 20.797200
+122  122  SNNPR  Mixture  5.002362
+123  123  SNNPR  Mixture  3.999426
+124  124  SNNPR Improved  3.020292
+125  125  SNNPR  Mixture 14.692069
+126  126  SNNPR  Mixture  9.616184
+127  127  SNNPR  Mixture  2.689204
+128  128  SNNPR Improved  1.709691
+129  129  SNNPR  Mixture 13.136640
+130  130  SNNPR  Mixture  3.830010
+131  131  SNNPR  Mixture  6.899748
+132  132  SNNPR Improved  0.744800
+133  133  SNNPR  Mixture 14.567240
+134  134  SNNPR  Mixture  5.948984
+135  135  SNNPR  Mixture  8.367457
+136  136  SNNPR  Mixture  4.527240
+137  137  SNNPR Improved  0.676500
+138  138  SNNPR  Mixture  2.944332
+139  139  SNNPR Improved  2.947680
+140  140  SNNPR  Mixture  2.792000
+141  141  SNNPR Improved  2.548700
+142  142  SNNPR  Mixture  3.205832
+143  143  SNNPR Improved  2.921460
+144  144  SNNPR  Mixture  2.934400
+145  145  SNNPR  Mixture  2.873600
+146  146  SNNPR  Mixture  2.632000
+147  147  SNNPR  Mixture 10.901250
+148  148  SNNPR  Mixture  3.602404
+149  149  SNNPR  Mixture  3.317310
+150  150  SNNPR  Mixture  4.419189
+151  151  SNNPR    Local  6.476800
+152  152  SNNPR Improved  1.276800
+153  153  SNNPR    Local  3.626640
+154  154  SNNPR Improved  1.276800
+155  155  SNNPR    Local  4.587120
+156  156  SNNPR Improved  1.363200
+157  157  SNNPR Improved  0.907800
+158  158  SNNPR Improved  1.366080
+159  159  SNNPR Improved  1.799270
+160  160  SNNPR Improved  1.316557
+161  161  SNNPR    Local  2.782376
+162  162  SNNPR Improved  0.507680
+163  163  SNNPR    Local  2.599276
+164  164  SNNPR Improved  0.495360
+165  165  SNNPR    Local  3.197888
+166  166  SNNPR    Local 32.131700
+167  167  SNNPR  Mixture  8.240655
+168  168  SNNPR    Local 18.691407
+169  169  SNNPR  Mixture  5.568747
+170  170  SNNPR    Local 13.281621
+171  171  SNNPR  Mixture  4.945200
+172  172  SNNPR    Local 18.857434
+173  173  SNNPR  Mixture  8.390609
+174  174  SNNPR    Local 15.706680
+175  175  SNNPR    Local 18.638202
+176  176  SNNPR    Local 23.044359
+177  177  SNNPR    Local 14.905800
+178  178  SNNPR    Local 28.821000
+179  179  SNNPR    Local 20.732129
+180  180  SNNPR    Local 16.981130
+181  181  SNNPR Improved 10.349400
+182  182  SNNPR Improved  0.389300
+183  183  SNNPR Improved  4.218800
+184  184  SNNPR Improved  0.380800
+185  185  SNNPR Improved  3.137280
+186  186  SNNPR Improved  1.421300
+187  187  SNNPR Improved  2.240810
+188  188  SNNPR Improved  1.245870
+189  189  SNNPR Improved  1.937220
+190  190  SNNPR Improved  2.352960
+191  191  SNNPR Improved  2.849842
+192  192  SNNPR Improved  2.514080
+193  193  SNNPR Improved  2.722100
+194  194  SNNPR Improved  3.153090
+195  195  SNNPR Improved  2.660000
+196  196  SNNPR Improved  0.524799
+197  197  SNNPR Improved  1.358951
+198  198  SNNPR  Mixture  6.835200
+199  199  SNNPR Improved  2.039800
+200  200  SNNPR Improved  1.482560
+201  201  SNNPR Improved  1.200150
+202  202  SNNPR  Mixture  1.638360
+203  203  SNNPR Improved  1.428610
+204  204  SNNPR Improved  0.967820
+205  205  SNNPR  Mixture  1.985325
+206  206  SNNPR Improved  1.578342
+207  207  SNNPR Improved  0.224840
+208  208  SNNPR  Mixture  2.019660
+209  209  SNNPR Improved  1.354600
+210  210  SNNPR Improved  1.349400
+211  211  SNNPR    Local 10.251840
+212  212  SNNPR Improved  3.480594
+213  213  SNNPR    Local 14.262800
+214  214  SNNPR Improved  3.300220
+215  215  SNNPR  Mixture  3.214360
+216  216  SNNPR Improved  4.667380
+217  217  SNNPR    Local 11.656400
+218  218  SNNPR Improved  2.824360
+219  219  SNNPR    Local 12.746020
+220  220  SNNPR  Mixture  2.487500
+221  221  SNNPR  Mixture  1.934400
+222  222  SNNPR    Local  7.085352
+223  223  SNNPR  Mixture  1.832700
+224  224  SNNPR    Local  4.701200
+225  225  SNNPR  Mixture  1.808100
+226  226  SNNPR    Local 17.487376
+227  227  SNNPR  Mixture 11.658595
+228  228  SNNPR  Mixture  1.441600
+229  229  SNNPR    Local 21.973280
+230  230  SNNPR    Local 38.645600
+231  231  SNNPR  Mixture 16.587954
+232  232  SNNPR  Mixture 16.330796
+233  233  SNNPR    Local 20.198609
+234  234  SNNPR    Local 18.434304
+235  235  SNNPR  Mixture  4.294978
+236  236  SNNPR  Mixture  4.785517
+237  237  SNNPR    Local 20.248291
+238  238  SNNPR    Local 42.384100
+239  239  SNNPR  Mixture 13.428036
+240  240  SNNPR  Mixture 11.184362</code></pre>
+</div>
+</div>
+<section id="visualização-dos-subconjuntos" class="level2">
+<h2 class="anchored" data-anchor-id="visualização-dos-subconjuntos">Visualização dos subconjuntos</h2>
+<p>Formando gráficos ggplot para cada subgrupo</p>
+</section>
+</section>
+<section id="boxplot-de-severidade-por-cultivar-em-cr_oromia" class="level1">
+<h1>Boxplot de Severidade por Cultivar em <strong>cr_oromia</strong></h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">&lt;-</span> cr_oromia <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(cultivar,sev2,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill=</span>cultivar))<span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>()<span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_few</span>()<span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">"Cultivar"</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span> <span class="st">"Severity(%)"</span><span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>         <span class="fu">coord_flip</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="boxplot-de-severidade-por-cultivar-em-cr_pr" class="level1">
+<h1>Boxplot de Severidade por Cultivar em <strong>cr_pr</strong></h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">&lt;-</span> cr_pr <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(cultivar,sev2,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill=</span> cultivar))<span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()<span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>()<span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_few</span>()<span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Cultivar"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span> <span class="st">"Severity(%)"</span><span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">coord_flip</span>())</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráfico-combinado-p1-p2" class="level1">
+<h1>Gráfico Combinado <strong>(p1 / p2)</strong></h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>(p1 <span class="sc">/</span> p2) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides=</span><span class="st">'collect'</span>,<span class="at">axes =</span> <span class="st">'collect'</span>)<span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">title=</span> <span class="st">"Coffee rust in Ethiopia"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">caption =</span> <span class="st">"Source: Del Ponte (2022)"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">tag_levels =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"patch1.png"</span>,<span class="at">width=</span><span class="dv">5</span>,<span class="at">height =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p># Histograma de Severidade em <strong>cr_oromia</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p3<span class="ot">&lt;-</span> cr_oromia <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>sev2))<span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráfico-box-plot-com-inserção-do-histograma" class="level1">
+<h1>Gráfico Box plot com Inserção do Histograma</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p1<span class="sc">+</span><span class="fu">inset_element</span>(p3, <span class="at">left=</span> <span class="fl">0.6</span>, <span class="at">bottom=</span> <span class="fl">0.6</span>, <span class="at">right=</span><span class="dv">1</span>, <span class="at">top=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="aula3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

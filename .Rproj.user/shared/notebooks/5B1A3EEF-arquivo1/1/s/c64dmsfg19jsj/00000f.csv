@@ -1,0 +1,3 @@
+"0","library(readxl)"
+"0",""
+"0","dados1 <- read_excel(""Dados.xlsx"", sheet = 6)"

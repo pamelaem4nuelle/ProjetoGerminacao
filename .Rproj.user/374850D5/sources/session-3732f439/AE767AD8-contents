@@ -1,0 +1,139 @@
+---
+title: "Estatística descritiva"
+format: html
+editor: visual
+---
+
+## Importação dos dados
+
+Foi utilizado uma função dentro do pacote **tidyverse**, que permite ver as primeiras linhas e as colunas do conjunto de dados, bem como o tipo de dados de cada coluna.
+
+```{r}
+library(tidyverse)
+cr <- read.csv("https://raw.githubusercontent.com/emdelponte/paper-coffee-rust-Ethiopia/master/data/survey_clean.csv")
+glimpse (cr)
+```
+
+## Gráfico de histograma facetado
+
+Este gráfico permite comparar a distribuição da severidade (sev2) em diferentes regiões e cultivares. Cada subplot mostra a distribuição da severidade para uma combinação específica de região e cultivar, e as cores indicam a região, ajudando a visualizar diferenças regionais dentro de cada cultivar.
+
+```{r}
+library(ggthemes)
+cr %>% 
+  ggplot(aes(x=sev2,fill=region))+
+  geom_histogram()+
+  facet_wrap(region ~ cultivar, ncol = 2)+
+  scale_fill_manual(values=c("red","blue"))+
+  theme_minimal(base_size = 14)+
+  theme(legend.position = "bottom")+
+  labs(y="Frequency",
+       x="Severity(%)", fill= "Region")
+ggsave("crl.png",bg= "white")
+```
+
+## Sumário estatístico
+
+```{r}
+summary(cr$inc)
+```
+
+```{r}
+cr %>% 
+  group_by(cultivar) %>% 
+  summarize(sev_med=median(sev2),
+            sev_mean=mean(sev2),
+            sev_sd=sd(sev2))
+```
+
+## Gráfico de dispersão
+
+```{r}
+cr %>% 
+  ggplot(aes(inc, sev2))+
+  geom_point()
+  
+```
+
+# Criação de subconjuntos
+
+Utilizando as funções **select** e **filter**
+
+```{r}
+# filtra Oromia
+cr_oromia <-cr %>% 
+  select(farm,region,cultivar,sev2) %>% 
+  filter(region=="Oromia")
+cr_oromia
+# filtra SNNPR
+cr_pr <- cr %>% 
+  select(farm,region,cultivar,sev2) %>% 
+  filter(region =="SNNPR")
+cr_pr
+```
+
+## Visualização dos subconjuntos
+
+Formando gráficos ggplot para cada subgrupo
+
+# Boxplot de Severidade por Cultivar em **cr_oromia**
+
+```{r}
+library(ggthemes)
+p1<- cr_oromia %>%
+  ggplot(aes(cultivar,sev2,
+             fill=cultivar))+
+  geom_boxplot()+
+  theme_few()+
+  scale_fill_few()+
+  labs(x= "Cultivar",
+       y= "Severity(%)"+
+         coord_flip())
+```
+
+# Boxplot de Severidade por Cultivar em **cr_pr**
+
+```{r}
+p2<- cr_pr %>%
+  ggplot(aes(cultivar,sev2,
+             fill= cultivar))+
+  geom_boxplot()+
+  theme_few()+
+  scale_fill_few()+
+  labs(x="Cultivar",
+       y= "Severity(%)"+
+         coord_flip())
+  
+p1
+p2
+```
+
+# Gráfico Combinado **(p1 / p2)**
+
+```{r}
+library(patchwork)
+
+(p1 / p2) +
+  plot_layout(guides='collect',axes = 'collect')+
+  plot_annotation(title= "Coffee rust in Ethiopia",
+                  caption = "Source: Del Ponte (2022)",
+                  tag_levels = 'A')
+ggsave("patch1.png",width=5,height = 4)
+```
+
+\# Histograma de Severidade em **cr_oromia**
+
+```{r}
+p3<- cr_oromia %>% 
+  ggplot(aes(x=sev2))+
+  geom_histogram(
+  )
+p3
+```
+
+# Gráfico Box plot com Inserção do Histograma
+
+```{r}
+
+p1+inset_element(p3, left= 0.6, bottom= 0.6, right=1, top=1)
+```

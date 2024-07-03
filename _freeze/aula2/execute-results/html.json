@@ -1,0 +1,15 @@
+{
+  "hash": "53a98e7929e6aed936428cc53324e6d7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Estatística descritiva\"\nformat: html\neditor: visual\n---\n\n\n## Importação de dados\n\nPara importar os dados, há duas formas: utilizando o pacote **gsheet**, o qual usaria uma planilha online ou utilizando o pacote **readxl** para conseguir carregar o que está nos documentos no computador.\n\n## Geração de gráfico com os dados importados\n\nUtilizando o pacote **ggplot2** Atribuindo os dados importados a uma função do pacote e com a formatação do gráfico.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ec50estimator)\ndf1 <- multi_isolate\nlibrary(readxl)\ndf2 <- read_excel(\"dados-diversos.xlsx\")\ndf21 <- read_excel(\"dados-diversos.xlsx\", 2)\nlibrary(tidyverse)\ndf3 <- read.csv(\"dados-diversos.csv\")\nlibrary(gsheet)\ndf4 <- gsheet2tbl(\"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=9830331372\")\nlibrary(ggplot2)\ng1 <- df4 %>% \n  ggplot(aes(trat,comp))+\n  geom_boxplot()+\n  geom_jitter(width=0.05,\n              color = \"black\",\n              shape = 2,\n              size = 3)\n  g1 + theme_classic()+\n    labs(x = \"tratamento\",\n         y = \"comprimento (mm)\",\n         title = \"Meu primeiro ggplot\",\n         caption = \"Fonte: Dados diversos\")+\n    #ylim(0,20)+\n    scale_y_continuous(limits = c(0,20),\n                       n.breaks=10)\n```\n\n::: {.cell-output-display}\n![](aula2_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ec50estimator) \ndf1 <- multi_isolate\n\nlibrary(readxl) \ndf2 <- read_excel(\"dados-diversos.xlsx\") \ndf21 <- read_excel(\"dados-diversos.xlsx\", 2)\nlibrary(tidyverse) \ndf3 <- read.csv(\"dados-diversos.csv\")\nlibrary(gsheet) \ndf4 <- gsheet2tbl(\"https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=983033137\")                                  \nlibrary(ggplot2)\ng1 <- df4 %>% \n  ggplot(aes(trat,comp))+ geom_boxplot()+\n  geom_jitter(width=0.05, color = \"black\",shape = 2, size = 3) \ng1\n```\n\n::: {.cell-output-display}\n![](aula2_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

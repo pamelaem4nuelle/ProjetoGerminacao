@@ -1,0 +1,70 @@
+---
+title: "Aula10"
+format: "html"
+editor: "visual"
+---
+
+Correlação: associação entre duas variáveis 
+
+Quanto maior a correlação menor o p-valor
+
+## Correlação 
+
+```{r}
+library(gsheet)
+library(tidyverse)
+imgss <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=373270992")
+
+imgss %>% 
+  pivot_longer(3:5, names_to = "method",
+               values_to="value") %>% 
+  ggplot(aes(method, value))+
+  geom_boxplot()
+
+imgss %>% 
+  ggplot(aes(Assess, ImageJ))+
+  geom_point()+
+  geom_smooth(method="lm")
+
+imgs2<- imgss %>% 
+  select_at(3:5)
+library(AgroR)
+corgraph(imgs2)
+
+cor.test(imgs2$Assess, imgs2$LeafDoctor)
+cor(imgs2$Assess, imgs2$LeafDoctor)
+
+library(corrplot)
+
+library(gsheet)
+library(tidyverse)
+library(AgroR)
+library(corrplot)
+
+
+imgss <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=373270992")
+
+imgss %>% 
+  pivot_longer(cols = 3:5, names_to = "method", values_to = "value") %>% 
+  ggplot(aes(method, value)) +
+  geom_boxplot()
+
+imgss %>% 
+  ggplot(aes(Assess, ImageJ)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+
+cor_test_result <- cor.test(imgs2$Assess, imgs2$LeafDoctor)
+print(cor_test_result)
+
+cor_value <- cor(imgs2$Assess, imgs2$LeafDoctor)
+print(cor_value)
+
+
+
+
+
+
+```
+

@@ -1,0 +1,258 @@
+---
+title: "Aula 9"
+format: html
+editor: visual
+---
+
+# Análise de Modelo Misto
+
+## Parcela subdividida
+
+```{r}
+library(gsheet)
+library(tidyverse)
+library(magrittr)
+milho <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=1345524759#gid=1345524759")
+milho %>%  
+  ggplot(aes(method, index))+
+  geom_jitter(width = 0.05, color = "grey")+
+  stat_summary(fun.data = "mean_cl_boot", size = 0.5,
+               alpha = 0.5, color = "blue")+
+  facet_wrap(~ hybrid)+
+  theme_classic()
+
+
+```
+
+```{r}
+
+milho %>% 
+  ggplot(aes(method, yield))+
+  geom_jitter(width = 0.05, color = "grey")+
+  stat_summary(fun.data = "mean_cl_boot", size = 0.5,
+               alpha = 0.5, color = "red")+
+  facet_wrap(~ hybrid)+
+  theme_classic()
+
+```
+
+Os subgráficos presentes nos dois gráficos permitem observar como cada híbrido responde a diferentes métodos. Pode haver diferenças significativas entre híbridos, que podem ser observadas pela comparação das distribuições, médias e intervalos de confiança entre subgráficos. 
+
+## Modelo linear para parcela subdividida
+
+Ajusta a raiz quadrada do índice (sqrt(index)) com efeitos fixos de hybrid, method, sua interação, e block, além de um intercepto aleatório para cada combinação de block e hybrid.
+
+Após esse ajuste, é feito a ANOVA dos efeitos fixos, deu diferença significativa e atendeu as premissas da ANOVA de normalidade e homogeneidade. 
+```{r}
+library(lme4)
+milho <- milho %>% 
+  mutate(block=as.factor(block))
+mix2 <- lmer(sqrt(index)~hybrid*method+block+(1|block/hybrid),data= milho)
+
+anova(mix2)
+library(performance)
+check_normality(mix2)
+check_heteroscedasticity(mix2)
+library(DHARMa)
+plot(simulateResiduals(mix2))
+qqnorm(residuals(mix2))
+qqline(residuals(mix2))
+hist(residuals(mix2))
+
+library(emmeans)
+medias_milho <- emmeans(mix2,
+                        ~hybrid|method,
+                        type="response")
+medias_milho2 <- emmeans(mix2,
+                         ~method|hybrid,
+                         type="response")
+library(multcomp)
+cld(medias_milho2, Letters = LETTERS)
+
+```
+
+## Gráfico de regressão linear 
+
+Para criar o gráfico, deve ser utilizado a função **geom_smooth** (method = lm) 
+```{r}
+estande <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=401662555#gid=401662555")
+
+estande %>% 
+  ggplot(aes(trat, nplants,color))+
+  geom_jitter(width = 0.1, alpha=0.2)+
+  facet_wrap(~trat)+
+  stat_summary(fun.data = 
+                 "mean_cl_boot",size= 0.5, color= "blue")+
+  geom_smooth(method="lm", se=F)
+  exp1<- estande %>% 
+    filter(exp==1)
+  exp1 %>% 
+    ggplot(aes(trat,nplants))+
+    geom_point()+
+    ylim(0,100)+
+    geom_smooth(se=F)
+  
+  lm1<- lm(nplants~trat,
+           data = exp1)
+  summary(lm1)
+```
+## Regressão linear simples por experimento
+```{r}
+exp2<- estande %>% 
+    filter(exp==2)
+  exp2 %>% 
+    ggplot(aes(trat,nplants))+
+    geom_point()+
+    ylim(0,100)+
+    geom_smooth(se=F,method = "lm")
+  
+  lm2<- lm(nplants~trat,
+           data = exp2)
+  summary(lm2)
+```
+
+```{r}
+exp3<- estande %>% 
+    filter(exp==3)
+  exp3 %>% 
+    ggplot(aes(trat,nplants))+
+    geom_point()+
+    ylim(0,100)+
+    geom_smooth(se=F,method = "lm")
+  
+  
+  lm3<- lm(nplants~trat,
+           data = exp3)
+  summary(lm3)
+  hist(residuals(lm3))
+```
+## Análise Global
+
+Uma análise global é uma abordagem abrangente que envolve a utilização de diversas técnicas analíticas, incluindo análise descritiva, inferencial, preditiva e diagnóstica, para obter uma visão completa e integrada de um conjunto de dados. Essa análise considera todas as variáveis relevantes e suas interações, permitindo entender padrões, tendências e relações subjacentes, além de validar e interpretar os resultados de forma holística.
+```{r}
+glm2 <- glm(nplants~trat, family="gaussian",
+            data = exp1)
+
+glm2
+
+AIC(glm2)
+
+glm2b <- glm(nplants ~trat, family= poisson(link="log"),
+             data= exp2)
+summary(glm2b)
+AIC(glm2b)
+```
+O AIC mede a qualidade de um modelo em termos de como ele equilibra a bondade de ajuste e a complexidade do modelo.
+
+Quanto menor o AIC, melhor!
+Na análise a cima o modelo **gaussian** se mostrou melhor que log.
+
+```{r}
+library(lme4)
+glm3 <- glm(nplants~trat, family="gaussian",
+            data = exp3)
+glm3
+
+AIC(glm3)
+
+glm3b <- glm(nplants ~trat, family= poisson(link="log"),
+             data= exp3)
+summary(glm3b)
+AIC(glm3b)
+```
+O modelo mais indicado dos dados acima foi **log**.
+
+
+```{r}
+glm3 <- glmer(nplants~trat+ (trat|exp), family="gaussian",
+            data = estande)
+glm3
+summary(glm3)
+AIC(glm3)
+
+glm3b <- glmer(nplants ~trat+ (trat|exp), family= poisson(link="log"),
+             data= estande)
+
+summary(glm3b)
+AIC(glm3b)
+```
+
+O modelo gaussiano tem o menor valor de AIC. 
+
+```{r}
+library(remotes)
+library(r4pde)
+wm <- WhiteMoldSoybean
+wm %>% 
+  ggplot(aes(inc, yld))+
+  geom_point()+
+  facet_wrap(~study)+
+  theme_minimal()+
+  geom_smooth(method="lm", se= F)
+
+mofo1<- lm(yld~inc,
+           data = wm)
+summary(mofo1)
+
+```
+Visualização da relação entre a incidência da doença e o rendimento da soja em diferentes estudos, ajustando um modelo de regressão linear para quantificar essa relação. 
+```{r}
+library(broom)
+ wm %>% 
+  group_by(study) %>% 
+  do(tidy(lm(.$yld~.$inc), conf.int=TRUE))
+mofo2 <- wm %>% 
+  group_by(study) %>% 
+  do(tidy(lm(.$yld~.$inc), conf.int=TRUE))
+mofo2
+
+
+```
+Este código ajusta modelos de regressão linear separadamente para cada estudo no conjunto de dados wm (WhiteMoldSoybean) e organiza os resultados de maneira tabular usando o pacote **broom**. Isso permite uma análise detalhada de como a incidência de mofo branco (inc) afeta o rendimento da soja (yld) em diferentes estudos. Os coeficientes e intervalos de confiança ajudam a entender a magnitude e a significância das relações para cada estudo específico.
+
+```{r}
+library(lme4)
+mofo3<- lmer(yld~inc+(inc|study), data = wm, 
+             REML= F)
+summary(mofo3)
+anova(mofo3)
+confint(mofo3, method="Wald")
+```
+O código ajusta um modelo linear misto para analisar a relação entre a incidência de mofo branco e o rendimento da soja, considerando as variações entre diferentes estudos. O uso de efeitos aleatórios permite capturar a variabilidade nos efeitos de inc entre os estudos. A função **summary** fornece um resumo detalhado do modelo, **anova** testa a significância dos termos, e **confint** fornece intervalos de confiança para os parâmetros, permitindo uma análise abrangente e robusta.
+
+## Correlação linear
+
+```{r}
+library(gsheet)
+library(patchwork)
+library(tidyverse)
+imgs <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=373270992#gid=373270992")
+p1 <- imgs %>% 
+  ggplot(aes(Assess, ImageJ))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+p2 <- imgs %>% 
+  ggplot(aes(Assess, LeafDoctor))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+imgs %>%  
+  pivot_longer(3:5, names_to = "method",
+               values_to = "value") %>%  
+  ggplot(aes(method, value))+
+  geom_boxplot()
+combined_plot <- p1 + p2
+print(combined_plot)
+```
+O código fornecido cria duas visualizações de dispersão com linhas de regressão para analisar a relação entre Assess e dois métodos diferentes (ImageJ e LeafDoctor). Além disso, transforma os dados em um formato longo e cria boxplots para comparar a distribuição dos valores entre os diferentes métodos. Isso permite uma análise visual detalhada das relações entre Assess e os métodos avaliados, bem como a distribuição dos valores gerados por cada método.
+
+```{r}
+img2 <- imgs %>%  
+  dplyr::select(Assess, LeafDoctor, ImageJ)
+
+library(AgroR)
+corgraph(img2)
+```
+
+O código fornecido seleciona três colunas (Assess, LeafDoctor, ImageJ) de um dataframe maior (imgs) e cria um novo dataframe (img2). Em seguida, ele usa a função **corgraph** do pacote **AgroR** para gerar um gráfico de correlação, permitindo uma análise visual das relações lineares entre as variáveis selecionadas. Esse gráfico ajuda a identificar pares de variáveis que têm fortes correlações positivas ou negativas, facilitando a compreensão das relações entre as variáveis medidas.

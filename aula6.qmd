@@ -1,0 +1,157 @@
+---
+title: "Estatística inferencial paramétrica - ANOVA"
+format: html
+editor: visual
+---
+
+## Estatística Inferencial
+
+# Dois grupos independentes
+
+Com base nos box plots, observamos diferenças entre as medianas dos dois grupos. Para testar se essas diferenças são estatisticamente significativas, é necessário aplicar o teste t para duas amostras independentes.
+
+```{r}
+library(gsheet)
+
+mg <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=983033137")
+  
+library(tidyverse)
+mg %>% 
+  ggplot(aes(trat, comp))+
+  geom_boxplot()
+```
+
+# Teste-t para amostras independentes
+
+```{r}
+
+mg2 <- mg %>%
+  pivot_wider(names_from = trat,
+              values_from = comp)
+
+teste1 <- t.test(mg2$Mg2, mg2$control)
+
+shapiro.test(mg2$control)
+hist(mg2$control)
+hist(mg2$Mg2)
+shapiro.test(mg2$Mg2)
+var.test(mg2$control, mg2$Mg2)
+
+qqnorm(mg2$control)
+
+
+qqnorm(mg2$Mg2)
+
+library(report)
+report(teste1)
+```
+
+Teste t:
+
+O valor p (0.02) é menor que 0.05, indicando que rejeitamos a hipótese nula. Portanto, há uma diferença significativa entre as médias dos grupos Mg2 e control. Normalidade:
+
+Os valores p dos testes de Shapiro-Wilk para ambos os grupos são maiores que 0.05, indicando que não rejeitamos a hipótese de normalidade. Portanto, podemos assumir que os dados são normalmente distribuídos.
+
+Homogeneidade das Variâncias: O valor p do teste F é maior que 0.05, indicando que não rejeitamos a hipótese nula. Portanto, podemos assumir que as variâncias dos dois grupos são iguais. Histogramas e Q-Q Plots:
+
+Os histogramas e Q-Q plots confirmam visualmente que os dados seguem uma distribuição normal. Podemos concluir que há uma diferença significativa nas médias de comp entre os grupos Mg2 e control. As suposições de normalidade e homogeneidade das variâncias foram atendidas, validando o uso do teste t para essa comparação.
+
+# Dois grupos dependentes
+
+Os dois box-plots abaixo, são dados que possuem dependencia, então foram pareados, demonstrando diferenças nas medianas de acurácia entre as diferentes avaliações, indicando variações na acurácia central.
+
+```{r}
+escala <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=1729131173#gid=1729131173")
+escala2 <- escala %>% 
+  ggplot(aes(assessment, acuracia))+
+  geom_boxplot()
+escala2
+escala2 <- escala %>%
+  select(assessment, rater, acuracia) %>% 
+  pivot_wider(names_from = assessment,
+              values_from = acuracia)
+escala2
+```
+
+# Test-t para amostras dependentes
+
+```{r}
+shapiro.test(escala2$Unaided)
+shapiro.test(escala2$Aided1)
+var.test(escala2$Unaided, escala2$Aided1)
+
+t.test(escala2$Aided1, escala2$Unaided,
+       paired=TRUE,
+       var.equal = FALSE)
+```
+
+O teste t pareado revelou que há uma diferença significativa entre as médias das avaliações Aided1 e Unaided (valor-p \< 0.05), sugerindo que as condições das avaliações influenciam a acurácia.
+
+Os testes de normalidade (Shapiro-Wilk) indicaram que as distribuições dos dados Unaided e Aided1 são normais, dado que os valores-p são maiores que 0.05. O teste de homogeneidade de variâncias (F-Test) mostrou que as variâncias entre Unaided e Aided1 não são significativamente diferentes (valor-p \> 0.05).
+
+Em resumo, podemos concluir que as distribuições de Unaided e Aided1 são normais, possuem variâncias semelhantes, e há uma diferença significativa entre as médias das duas avaliações.
+
+# Premissas de normalidade
+
+```{r}
+shapiro.test(escala2$Unaided)
+shapiro.test(escala2$Aided1)
+shapiro.test(log(escala2$Unaided))
+
+```
+
+Unaided: Os dados Unaided não são normalmente distribuídos. Aided1: Os dados Aided1 são normalmente distribuídos. log(Unaided): Após a transformação logarítmica, os dados Unaided seguem uma distribuição normal. A transformação logarítmica foi útil para normalizar os dados Unaided, que inicialmente não seguiam uma distribuição normal. Essa informação é essencial para escolher métodos estatísticos apropriados que assumem normalidade dos dados.
+
+# Teste não paramétrico
+
+É utilizado quando não atende as premissas.
+
+```{r}
+wilcox.test(escala2$Aided1,
+            escala2$Unaided,
+            paired= TRUE)
+```
+
+# Três ou mais grupos
+
+```{r}
+micelial<- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=959387827")
+
+```
+
+```{r}
+micelial %>% 
+  ggplot(aes(especie,tcm))+
+  geom_jitter(width = 0.5)
+```
+
+O indicativo de diferença demonstra os pontos mais espalhados, mostrando que não á uma diferença clara entre as espécies.
+
+# ANOVA e premissas de normalidade e homogeneidade
+
+```{r}
+m1 <- lm (tcm ~ especie-1, data = micelial)
+anova(m1)
+summary(m1)
+hist(m1$residuals)
+bartlett.test(tcm~especie, data=micelial)
+shapiro.test(m1$residuals)
+library(emmeans)
+medias1 <- emmeans(m1,~especie)
+library(multcomp)
+library(multcompView)
+cld(medias1)
+
+library(DHARMa)
+plot(simulateResiduals(m1))
+
+report(m1)
+
+library(performance)
+check_normality(m1)
+check_heteroscedasticity(m1)
+check_model(m1)
+
+```
+
+A ANOVA indica se há diferenças significativas entre as espécies. O histograma dos resíduos deve mostrar uma distribuição aproximadamente normal. O teste de Bartlett tem um valor-p \> 0.05, assumindo homogeneidade de variâncias.

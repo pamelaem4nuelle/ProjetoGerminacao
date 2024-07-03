@@ -1,0 +1,62 @@
+---
+title: "Estatística descritiva"
+format: html
+editor: visual
+---
+
+## Importação de dados
+
+Para importar os dados, há duas formas: utilizando o pacote **gsheet**, o qual usaria uma planilha online ou utilizando o pacote **readxl** para conseguir carregar o que está nos documentos no computador.
+
+## Geração de gráfico com os dados importados
+
+Utilizando o pacote **ggplot2** Atribuindo os dados importados a uma função do pacote e com a formatação do gráfico.
+
+```{r}
+library(ec50estimator)
+df1 <- multi_isolate
+library(readxl)
+df2 <- read_excel("dados-diversos.xlsx")
+df21 <- read_excel("dados-diversos.xlsx", 2)
+library(tidyverse)
+df3 <- read.csv("dados-diversos.csv")
+library(gsheet)
+df4 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=9830331372")
+library(ggplot2)
+g1 <- df4 %>% 
+  ggplot(aes(trat,comp))+
+  geom_boxplot()+
+  geom_jitter(width=0.05,
+              color = "black",
+              shape = 2,
+              size = 3)
+  g1 + theme_classic()+
+    labs(x = "tratamento",
+         y = "comprimento (mm)",
+         title = "Meu primeiro ggplot",
+         caption = "Fonte: Dados diversos")+
+    #ylim(0,20)+
+    scale_y_continuous(limits = c(0,20),
+                       n.breaks=10)
+  
+  
+  
+```
+
+```{r}
+library(ec50estimator) 
+df1 <- multi_isolate
+
+library(readxl) 
+df2 <- read_excel("dados-diversos.xlsx") 
+df21 <- read_excel("dados-diversos.xlsx", 2)
+library(tidyverse) 
+df3 <- read.csv("dados-diversos.csv")
+library(gsheet) 
+df4 <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit?gid=983033137#gid=983033137")                                  
+library(ggplot2)
+g1 <- df4 %>% 
+  ggplot(aes(trat,comp))+ geom_boxplot()+
+  geom_jitter(width=0.05, color = "black",shape = 2, size = 3) 
+g1
+```

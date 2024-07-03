@@ -1,0 +1,156 @@
+---
+title: "ANOVA"
+format: html
+editor: visual
+---
+
+# Anova com blocos casualizados
+
+## ANOVA DFC
+
+Método estatístico utilizado para comparar as médias de três ou mais grupos enquanto se controla a variação entre blocos
+Utilizando a função **as.factor** para converter as variáveis para fatores.
+Ajustou para modelo linar utilizando a função **lm**.
+
+```{r}
+library(tidyverse)
+library(gsheet)
+soja <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=866852711")
+
+soja<- soja %>% 
+  mutate(TRAT= as.factor(TRAT),
+         BLOCO= as.factor(BLOCO))
+dfc<- soja %>% 
+  ggplot(aes(TRAT, DFC))+
+  geom_jitter(width= 0.05, color=
+                "red")+
+  stat_summary(fun.data = 
+                 "mean_cl_bloot", size=0.5, color=
+                 "black", alpha= 0.05)
+dfc
+
+aov_dfc <- lm(DFC ~ TRAT + BLOCO,
+              data = soja)
+anova(aov_dfc)
+
+library(performance)
+check_heteroscedasticity(aov_dfc)
+check_normality(aov_dfc)
+
+library(emmeans)
+medias_dfc <- emmeans(aov_dfc, ~TRAT)
+medias_dfc
+pwpm(medias_dfc)
+
+library(multcomp)
+cld(medias_dfc, Letters = LETTERS)
+```
+A dispersão dos pontos vermelhos dentro de cada nível de TRAT mostra a variabilidade dos dados de DFC dentro de cada tratamento.
+Observa-se que no tratamento 1, a doença de final de ciclo (DFC) apresentou um índice maior, diferenciando-se dos demais tratamentos. Para confirmar se essas diferenças são estatisticamente significativas, foi realizada uma ANOVA, seguida da verificação das premissas e do teste de Tukey. A análise confirmou que os resíduos da ANOVA estavam dentro dos parâmetros de normalidade e homogeneidade. No teste de Tukey, o tratamento 1 mostrou uma diferença estatisticamente significativa em relação aos demais tratamentos.
+
+## ANOVA FER
+```{r}
+aov_fer <- lm(log(FER) ~ TRAT + BLOCO,
+              data = soja)
+anova(aov_fer)
+
+library(performance)
+check_heteroscedasticity(aov_fer)
+check_normality(aov_fer)
+
+library(emmeans)
+medias_fer <- emmeans(aov_fer, ~TRAT, type="response")
+medias_fer
+
+pwpm(medias_fer)
+
+library(multcomp)
+library(writexl)
+cld2<-cld(medias_fer, Letters = LETTERS)
+write_xlsx(cld2, "df.xlsx")
+cld2
+
+b<-boxcox (lm(soja$FER~1))
+lambda<-b$x[which.max(b$y)]
+lambda
+soja$FER2<-(soja$FER^lambda-1)/lambda
+library(forecast)
+InvBoxCox(0.63, lambda, biasadj = FALSE, fvar)
+```
+
+Analisando outra variável resposta, chamada FER (Fator de Eficiência Reprodutiva), foi realizada uma ANOVA, que demonstrou diferença estatisticamente significativa. A análise dos resíduos mostrou que eles estão distribuídos de forma normal, mas não homogênea. A média desses dados foi utilizada para realizar o teste de Tukey, que identificou diferenças significativas, destacando-se o tratamento 1, que se diferenciou dos demais.
+
+## ANOVA PROD
+
+
+```{r}
+aov_prod <- lm(PROD ~ TRAT + BLOCO,
+              data = soja)
+library(agricolae)
+cv.model(aov_prod)
+anova(aov_prod)
+library(performance)
+check_heteroscedasticity(aov_prod)
+check_normality(aov_prod)
+
+library(emmeans)
+medias_prod <- emmeans(aov_prod, ~TRAT)
+medias_prod
+pwpm(medias_prod)
+
+library(multcomp)
+medias_pord_grupo <- cld(medias_prod, Letters = LETTERS)
+medias_pord_grupo
+```
+Foi ajustado um modelo linear para a produção (PROD) com base nos tratamentos (TRAT) e blocos (BLOCO). A ANOVA mostrou diferenças estatisticamente significativas entre os tratamentos. O coeficiente de variação (CV) foi calculado para avaliar a variabilidade relativa dos dados. Os resíduos foram verificados quanto à heterocedasticidade (variação não constante) e normalidade (seguirem uma distribuição normal). As médias marginais estimadas foram calculadas para cada tratamento e feitas comparações pareadas, utilizando o método das Letras Agrupadas para indicar quais médias de tratamentos são significativamente diferentes. Os resultados principais indicam que a ANOVA encontrou diferenças significativas entre os tratamentos, as verificações confirmaram se os resíduos atendem às suposições de homogeneidade de variâncias e normalidade, e os tratamentos foram comparados e agrupados conforme suas médias, identificando quais são significativamente diferentes entre si.
+
+## Médias de produção dos dados
+```{r}
+df_prod<- data.frame(medias_prod)
+df_prod %>% 
+  ggplot(aes(TRAT, emmean))+
+  geom_point()+
+  ylim(3000,6500)+
+  geom_errorbar(aes(min=lower.CL, 
+                    max= upper.CL),
+                width=0.1)+
+  annotate(geom = "text", x=1.2, y=4200,
+         label="A")
+df_prod <- cld(medias_prod, Letters = LETTERS)
+df_prod <- as.data.frame(df_prod)
+knitr::kable(df_prod |> dplyr::select(TRAT, emmean, .group))
+library(writexl)
+write_xlsx(df_prod, "df.xlsx")
+
+```
+ O gráfico gerado é relacionado as médias estimadas de produção (emmean) para cada tratamento (TRAT) com seus respectivos intervalos de confiança. Ao fazer a comparação de médias, houveram três agrupamentos com relação a diferenças siginificativas entre os tratamentos, mostrando que o tratamento 6 teve maior média de produção.
+
+## Calculo da Área Abaixo da Curva do Progresso da Doença(AACPD)
+Para fazer análise relacionada a área abaixo da curva do progresso da doença, utiliza-se o pacote **eppifiter**
+```{r}
+curva<- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=1807247585")
+curva|> 
+  group_by(day, Irrigation) |> 
+  summarise(mean_sev = mean(severity)) |> 
+  ggplot(aes(day, mean_sev)) +
+   geom_point(which = 0.05)+ 
+  geom_line()+
+  facet_wrap(~Irrigation)
+curva |> 
+  group_by(day, Irrigation) |> 
+  summarise(mean_sev = mean(severity)) |> 
+  ggplot(aes(day, mean_sev, color = Irrigation))+
+  geom_point()+
+  geom_line()
+
+library(epifitter)
+curve2<-curva %>% 
+  group_by(Irrigation, rep) %>% 
+  summarise(aacpd= AUDPC(day, severity))
+m_curve<- lm(aacpd~Irrigation+ factor(rep),
+             data=curve2)
+anova(m_curve)
+library(agricolae)
+cv.model(m_curve)
+```
+Os gráficos gerados indicam como a severidade da doença varia ao longo do tempo sob diferentes condições de irrigação. Tendências distintas entre os níveis de irrigação sugerem que a irrigação tem um impacto significativo na severidade da doença.

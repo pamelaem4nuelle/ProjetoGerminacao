@@ -1,0 +1,60 @@
+---
+title: "Estatística descritiva"
+format: html
+editor: visual
+---
+
+## Gráfico Histograma
+
+Nesse gráfico é possível observar a distribuição das notas 1 e 2.
+
+Para a Nota 1, percebe-se que houve maior frequência em notas acima de 90. No entanto, a menor frequência estava presente em notas abaixo de 70.
+
+Ao observar a Nota 2, houve uma diminuição das notas acima de 90, porém, estas ainda permaneceram em destaque como as notas mais frequentes. As frequências das notas que estavam entre 50 e 65 diminuíram aproximadamente 50%.
+
+As funções utilizadas para compor este gráfico estão presentes no **ggplot2**. Elas permitem a construção de gráficos por camada. Utilizando a função **aes**, destaquei os dados que queria utilizar da tabela que carreguei anteriormente usando as bibliotecas **gsheet** e **ggthemes**. Utilizei a função **geom_histogram** para gerar um histograma com as características desejadas, ajustando a cor, tamanho e legendas "Frequência" e "Notas". Por último, adicionei uma linha para indicar a média com a função **geom_vline**.
+
+```{r}
+library(tidyverse)
+library(gsheet)
+library(ggthemes)
+library(ggplot2)
+
+notas <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=1092065531")
+
+notas1 <- notas %>% select(prova, nota) %>% filter(prova == "1")
+notas2 <- notas %>% select(prova, nota) %>% filter(prova == "2")
+
+media1 <- mean(notas1$nota)
+media2 <- mean(notas2$nota)
+
+notas %>% 
+  ggplot(aes(x = nota)) +
+  geom_histogram(bins = 5, fill = "purple", color = "orange") +
+  facet_wrap(~ prova) +
+  labs(y = "Frequência", x = "Notas") +
+  geom_vline(data = notas1, aes(xintercept = media1), color = "black", linetype = "dashed") +
+  geom_vline(data = notas2, aes(xintercept = media2), color = "blue", linetype = "dashed")
+
+
+```
+
+## Gráfico Box-plot
+
+Foram criados dois gráficos das notas 1 e 2, no qual é uma relação entre notas e pontos, o box-plot dos dois estão presentes onde houve o maior volume de dados, a mediana da nota 1 está mais próxima do terceiro quartil e os pontos presentes indicam que a pontuação 12,5 equivale acima de 80 na nota e quantidade máxima da nota pode ser considerada um outliers, pois destoa do conjunto de dados, assim como as pontuações abaixo de 65.
+
+Nas notas 2, a mediana está no segundo quartil, no entanto, os outliers estão abaixo da nota 70.
+
+Foi utilizado a função ggplot para determinar o que será utilizado do gráfico anteriormente carregado e a função *geom_boxplot* para ativar o box-plot e determinar suas características como a sua cor, e o tamanho da fonte usando a função *geom_jitter*.
+
+```{r}
+
+notas <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1bq2N19DcZdtax2fQW9OHSGMR0X2__Z9T/edit#gid=1092065531")
+library(ggplot2)
+notas %>% 
+  ggplot(aes(pontos, nota,factor()))+
+  geom_boxplot(fill="green")+
+  facet_wrap(~prova)+
+  geom_jitter(size=0.92)
+
+```
